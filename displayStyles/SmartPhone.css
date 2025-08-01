@@ -1,0 +1,139 @@
+body,
+html {
+  overflow: hidden;
+}
+
+#rotate-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+#rotate-overlay .rotate-message {
+  color: white;
+  font-size: 20px;
+  padding: 16px 32px;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 8px;
+  text-align: center;
+}
+
+@media only screen and (max-width: 1080px) and (orientation: portrait) {
+  #rotate-overlay {
+    display: flex !important;
+  }
+
+  #fullscreen-toggle {
+    display: none;
+  }
+
+  #canvas {
+    display: block;
+    object-fit: cover;
+  }
+}
+
+@media only screen and (max-width: 1080px) and (orientation: landscape) {
+  #rotate-overlay {
+    display: none !important;
+  }
+}
+
+@media (max-width: 1080px) and (max-height: 500px) {
+
+  #start_headline {
+    display: none;
+  }
+
+  h1 {
+    font-size: 64px;
+    margin-block-end: 0;
+    margin-block-start: 8px;
+  }
+
+  .menu button,
+  .legal_notice button,
+  .privacy_policy button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    width: 240px;
+    height: 40px;
+    margin: 8px;
+  }
+
+  #start_headline,
+  #legal_notice h1,
+  #privacy_policy h1,
+  #options h1 {
+    font-size: 64px;
+  }
+
+  .key-item {
+    gap: 64px;
+  }
+
+  #hud-bar {
+    top: 5px;
+    right: 5px;
+    gap: 8px;
+  }
+
+  .key-list {
+    gap: 16px;
+    padding: 16px;
+    width: 240px;
+    height: 200px;
+    justify-content: center;
+    margin: 8px 0;
+  }
+
+  .key-item span {
+    font-size: 22px;
+  }
+
+  .key-item img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .menu {
+    height: 360px;
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+
+  p {
+    font-size: 16px;
+    word-break: break-word;
+    margin-block-start: 0;
+    margin-block-end: 0;
+  }
+
+  #audio-btn {
+    width: 24px;
+    height: 24px;
+  }
+
+  .hud-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+    #end_screen_buttons {
+    top: 88% !important;
+  }
+
+  .gameOver_menu_btn {
+    font-size: 16px !important;
+    border-radius: 16px !important;
+    padding: 6px 30px !important;
+  }
+}

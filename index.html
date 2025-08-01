@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html translate="no">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="displayStyles/SmartPhone.css">
+    <link rel="icon" href="icons/fav_icon.png" type="image/x-icon">
+    <script src="models/audio.class.js"></script>
+    <script src="models/drawable-object.class.js"></script>
+    <script src="models/movable-object.class.js"></script>
+    <script src="templates.js/coin_images.js"></script>
+    <script src="models/coin.class.js"></script>
+    <script src="templates.js/bottle_images.js"></script>
+    <script src="models/bottle.class.js"></script>
+    <script src="templates.js/character_images.js"></script>
+    <script src="models/character.class.js"></script>
+    <script src="templates.js/chicken_normal_images.js"></script>
+    <script src="models/chicken.class.js"></script>
+    <script src="templates.js/little_chicken_images.js"></script>
+    <script src="models/littleChicken.class.js"></script>
+    <script src="templates.js/statusbars_images.js"></script>
+    <script src="models/status-bar.class.js"></script>
+    <script src="templates.js/cloud_images.js"></script>
+    <script src="models/cloud.class.js"></script>
+    <script src="models/world.class.js"></script>
+    <script src="templates.js/gameOver_images.js"></script>
+    <script src="models/gameOver.class.js"></script>
+    <script src="templates.js/background_images.js"></script>
+    <script src="models/background-object.class.js"></script>
+    <script src="models/keyboard.class.js"></script>
+    <script src="models/level.class.js"></script>
+    <script src="models/throwable-object.class.js"></script>
+    <script src="templates.js/endboss_images.js"></script>
+    <script src="models/endboss.class.js"></script>
+    <script src="templates.js/win_images.js"></script>
+    <script src="models/gameWon.class.js"></script>
+    <script src="models/gameReset_class.js"></script>
+    <script src="js/smartPhone.js"></script>
+    <script src="levels/level1.js"></script>
+    <script src="js/menu.js"></script>
+    <script src="js/fullscreen.js"></script>
+    <script src="js/game.js"></script>
+    <title>El Polo Loco</title>
+</head>
+
+<body onload="runStartup()">
+    <section id="rotate-overlay" class="hidden">
+        <div class="rotate-message">
+        </div>
+    </section>
+    <main>
+        <section id="start_screen" class="start_screen hidden">
+            <h1 id="start_headline">Willkommen bei El Polo Loco!</h1>
+            <img src="img/9_intro_outro_screens/start/startscreen_1.png" />
+        </section>
+        <h1 id="main_headline"> El Polo Loco</h1>
+        <section id="menu" class="menu">
+            <button onclick="startGame()">Start</button>
+            <button onclick="showOptions()">Options</button>
+            <button onclick="showLegal()">Legal Notice</button>
+            <button onclick="showPrivacy()">Privacy Policy</button>
+            <button onclick="quitGame()">Quit</button>
+        </section>
+        <section id="options" class="menu hidden">
+            <h1>Options</h1>
+            <div class="key-list">
+                <div class="key-item">
+                    <img src="icons/left_icon.png" alt="Left">
+                    <span>Move left</span>
+                </div>
+                <div class="key-item">
+                    <img src="icons/right_icon.png" alt="Right">
+                    <span>Move right</span>
+                </div>
+                <div class="key-item">
+                    <img src="icons/space_icon.png" alt="Space">
+                    <span>Jump</span>
+                </div>
+                <div class="key-item">
+                    <img src="icons/d_icon.png" alt="D">
+                    <span>Throw bottle</span>
+                </div>
+            </div>
+            <button id="back_menu" onclick="backToMenu()">Back</button>
+            <button id="options-back" class="hidden">Back</button>
+        </section>
+        <section id="legal_notice" class="legal_notice hidden">
+            <h1>Legal-Notice</h1>
+            <h2><strong>Responsible person</strong></h2>
+            <p>
+                Responsible for data processing in connection with this game is:
+                <br><br>
+                Ebubekir Elicora <br>
+                Musterstraße 1<br>
+                12345 Musterstadt<br>
+                EMail:max.mustermannexample.com
+            </p>
+            <button onclick="backToMenu()">Back</button>
+        </section>
+        <section id="privacy_policy" class="privacy_policy hidden">
+            <h1>Privacy-Policy</h1>
+            <h2><strong>Responsible person</strong></h2>
+            <p>
+                Responsible for data processing in connection with this game is:
+                <br><br>
+                Ebubekir Elicora <br>
+                Musterstraße 1<br>
+                12345 Musterstadt<br>
+                EMail:max.mustermannexample.com
+            </p>
+            <button onclick="backToMenu()">Back</button>
+        </section>
+        <section id="canvas-container">
+            <canvas id="canvas" width="720" height="480" class="hidden"></canvas>
+            <img id="fullscreen-toggle" class="white-icon hidden" src="icons/fullScreen_icon.png" />
+            <section id="hud-bar" class="hidden">
+                <img id="restart-btn" class="hud-icon" src="icons/restart.png">
+                <img id="audio-btn" class="hud-icon" src="icons/speaker.png">
+                <img id="controls-btn" class="hud-icon" src="icons/controls_icons.png">
+            </section>
+            <section id="end_screen_buttons" class="hidden fixed-buttons">
+                <button onclick="backToMenu()" class="gameOver_menu_btn">Back to Menu</button>
+                <button onclick="quitGame()" class="gameOver_menu_btn">Quit</button>
+            </section>
+        </section>
+    </main>
+</body>
+
+</html>

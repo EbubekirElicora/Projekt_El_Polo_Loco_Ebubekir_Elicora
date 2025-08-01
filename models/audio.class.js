@@ -1,0 +1,147 @@
+/**
+ * Klasse zur Verwaltung von Audio-Sounds im Spiel.
+ * Unterstützt Original-Audios, geklonte Audios (für gleichzeitiges Abspielen),
+ * Lautstärkeregelung, Muten und Neustart-Handling.
+ */
+class AudioSounds {
+  constructor() {
+    this.originalAudioElements = {
+      littleChickenRun: new Audio('audio/little_chicken_run.mp3'),
+      chickenRun: new Audio('audio/chicken_normal_run.mp3'),
+      characterRun: new Audio('audio/charakter_run.mp3'),
+      characterJump: new Audio('audio/charakter_jump.mp3'),
+      characterFall: new Audio('audio/charakter_falling.mp3'),
+      characterHurt: new Audio('audio/charakter_hurt.mp3'),
+      coinCollected: new Audio('audio/coin_collected.mp3'),
+      bottleSplash: new Audio('audio/bottle_splash.mp3'),
+      bottleCollect: new Audio('audio/bottle_collect.mp3'),
+      bottleThrow: new Audio('audio/bottle_throw.mp3'),
+      gameOver: new Audio('audio/gameOver.mp3'),
+      gameWon: new Audio('audio/gameWon.mp3'),
+    };
+    this.currentlyPlayingClonedAudios = [];
+    this.setInitialVolumes();
+    this.isMuted = false;
+    this.isGameRestarting = false;
+  }
+
+  /**
+   * Setzt die initialen Lautstärken der Original-Audios,
+   * abgestimmt auf die Art des Sounds.
+   * @private
+   */
+  setInitialVolumes() {
+    for (let key in this.originalAudioElements) {
+      let audio = this.originalAudioElements[key];
+      if (key === 'chickenRun' || key === 'littleChickenRun' || key === 'coinCollected') {
+        audio.volume = 0.02;
+      } else if (key === 'bottleCollect' || key === 'characterHurt' || key === 'characterFall' || key === 'bottleThrow') {
+        audio.volume = 0.1;
+      } else if (key === 'characterRun') {
+        audio.volume = 0.2;
+      } else {
+        audio.volume = 0.5;
+      }
+    }
+  }
+
+  /**
+   * Spielt ein Original-Audio ab, wenn es noch nicht läuft.
+   * Überspringt Abspielen, wenn gemutet oder Spiel neustartet.
+   * @param {string} soundName - Name des Sounds, z.B. 'characterRun'
+   * @param {boolean} [shouldLoop=false] - Ob der Sound geloopt werden soll.
+   */
+  playOriginal(soundName, shouldLoop = false) {
+    if (this.isMuted || this.isGameRestarting) return;
+    const audio = this.originalAudioElements[soundName];
+    if (!audio) return;
+
+    if (audio.paused) {
+      audio.loop = shouldLoop;
+      audio.currentTime = 0;
+      this.playAudioSafe(audio);
+    }
+  }
+
+  /**
+   * Spielt ein geklontes Audio ab, damit mehrere Instanzen gleichzeitig laufen können.
+   * Fügt das geklonte Audio zur Liste hinzu für spätere Kontrolle.
+   * @param {string} soundName - Name des Sounds
+   * @param {boolean} [shouldLoop=false] - Ob geloopt werden soll
+   * @returns {HTMLAudioElement|null} Das geklonte Audio-Element oder null
+   */
+  playCloned(soundName, shouldLoop = false) {
+    if (this.isMuted || this.isGameRestarting) return null;
+    const original = this.originalAudioElements[soundName];
+    if (!original) return null;
+
+    const clone = original.cloneNode();
+    clone.loop = shouldLoop;
+    clone.volume = original.volume;
+    clone.currentTime = 0;
+    this.playAudioSafe(clone);
+    this.currentlyPlayingClonedAudios.push(clone);
+    return clone;
+  }
+
+  /**
+   * Stoppt ein Original-Audio und setzt es auf Anfang.
+   * @param {string} soundName - Name des Sounds
+   */
+  stopOriginal(soundName) {
+    const audio = this.originalAudioElements[soundName];
+    if (!audio) return;
+    audio.pause();
+    audio.currentTime = 0;
+  }
+
+  /**
+   * Stoppt alle Sounds (originale und geklonte).
+   * Setzt isGameRestarting-Flag, damit keine neuen Sounds starten.
+   */
+  stopAllSounds() {
+    this.isGameRestarting = true;
+    for (let key in this.originalAudioElements) {
+      this.stopOriginal(key);
+    }
+    this.currentlyPlayingClonedAudios.forEach(clone => {
+      clone.pause();
+      clone.currentTime = 0;
+    });
+    this.currentlyPlayingClonedAudios = [];
+  }
+
+  /**
+   * Entfernt das Neustart-Flag, damit wieder Sounds gespielt werden können.
+   */
+  clearRestartFlag() {
+    this.isGameRestarting = false;
+  }
+
+  /**
+   * Schaltet alle Sounds stumm oder zurück.
+   * Schaltet sowohl originale als auch geklonte Audios.
+   */
+  toggleMute() {
+    this.isMuted = !this.isMuted;
+    Object.values(this.originalAudioElements).forEach(audio => {
+      audio.muted = this.isMuted;
+    });
+    this.currentlyPlayingClonedAudios.forEach(clone => {
+      clone.muted = this.isMuted;
+    });
+  }
+
+  /**
+   * Versucht, ein Audio abzuspielen, fängt Fehler (z.B. Autoplay-Blocker) still ab.
+   * @private
+   * @param {HTMLAudioElement} audio
+   */
+  playAudioSafe(audio) {
+    const p = audio.play();
+    if (p && p.catch) {
+      p.catch(() => {
+      });
+    }
+  }
+}
