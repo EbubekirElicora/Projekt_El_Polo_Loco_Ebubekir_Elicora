@@ -163,7 +163,7 @@ class Character extends MovableObject {
      */
     _onIdle(idleTime) {
         this.world.audio.stopOriginal('characterRun');
-        if (idleTime < 15000) {
+        if (idleTime < 5000) {
             this.playAnimation(character_images.shortIdle);
         } else {
             this.playAnimation(character_images.longIdle);
