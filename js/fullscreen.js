@@ -12,6 +12,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const backMenuBtn = document.getElementById('back_menu');
     const optionsBackBtn = document.getElementById('options-back');
     const audioButton = document.getElementById('audio-btn');
+    
     let optionsFromGame = false;
     let wasFullscreenBeforeOptions = false;
     let isCurrentlyMuted = false;
