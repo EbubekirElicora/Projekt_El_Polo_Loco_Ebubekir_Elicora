@@ -128,6 +128,7 @@ function showPrivacy() {
 function showEndScreenButtons() {
   document.getElementById('hud-bar').classList.add('hidden');
   document.getElementById('end_screen_buttons').classList.remove('hidden');
+  document.getElementById('touch-controls').classList.add('hidden');
 }
 
 /**

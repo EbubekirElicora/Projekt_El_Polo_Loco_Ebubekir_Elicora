@@ -1,21 +1,6 @@
-/**
- * Referenz zum Canvas-Element im DOM.
- * @type {HTMLCanvasElement}
- */
 let canvas;
-
-/**
- * Die zentrale Welt-Instanz, die Spiellogik und Darstellung verwaltet.
- * @type {World}
- */
 let world;
-
-/**
- * Instanz der Keyboard-Klasse, um Tasteneingaben zu speichern.
- * @type {Keyboard}
- */
 let keyboard = new Keyboard();
-
 let audio = new AudioSounds();
 
 
