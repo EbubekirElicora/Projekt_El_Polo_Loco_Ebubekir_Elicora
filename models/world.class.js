@@ -15,6 +15,7 @@ class World {
     camera_x = 0;
     coinCount = 0;
     bottleCount = 0;
+    lastBottleThrow = 0;
     throwableObjects = [];
     isGameOver = false;
     isGameWon = false;
@@ -267,7 +268,9 @@ class World {
      * Erstellt ein neues ThrowableObject, fügt es der Liste hinzu, verringert den Flaschen-Zähler und spielt Wurf-Sound ab.
      */
     checkThrowObjects() {
-        if (this.keyboard.D && this.bottleCount > 0) {
+        const now = Date.now();
+        if (this.keyboard.D && this.bottleCount > 0 && now - this.lastBottleThrow > 1000) {
+            this.lastBottleThrow = now;
             let b = new ThrowableObject(this.character.x + 100, this.character.y + 100);
             b.world = this;
             this.throwableObjects.push(b);
