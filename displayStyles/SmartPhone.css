@@ -112,7 +112,7 @@
     margin-block-end: 0;
   }
 
-  #audio-btn {
+  #audio-btn, #controls-btn {
     width: 24px;
     height: 24px;
   }
