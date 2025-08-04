@@ -32,25 +32,28 @@
   }
 }
 
-@media only screen and (max-width: 1080px) and (orientation: landscape) {
-  #rotate-overlay {
-    display: none !important;
+@media only screen and (max-width: 1480px) and (orientation: landscape) {
+
+  #fullscreen-toggle {
+    width: 40px;
+    height: 40px;
+    bottom: 18px;
   }
 
-  #touch-controls {
+    #touch-controls {
     display: flex;
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
-    justify-content: space-around;
+    justify-content: space-evenly;
     pointer-events: none;
     z-index: 10002;
   }
 
   .touch-btn {
-    width: 60px;
-    height: 60px;
+    width: 80px;
+    height: 80px;
     pointer-events: auto;
     opacity: 0.8;
     transition: opacity .2s;
@@ -63,6 +66,12 @@
 
   .touch-btn:active {
     opacity: 1;
+  }
+}
+
+@media only screen and (max-width: 1080px) and (orientation: landscape) {
+  #rotate-overlay {
+    display: none !important;
   }
 }
 
