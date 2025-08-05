@@ -143,9 +143,60 @@ function restartHandler(refs, cbCheckOrientation) {
 }
 
 /**
- * Registriert alle benötigten Event-Listener für die Steuerung.
- * @param {object} refs - Sammlung aller benötigten DOM-Referenzen.
- * @param {Function} cbCheckOrientation - Callback für Orientation-Check.
+ * Setzt die Anzeige von Fullscreen-Button und Touch-Controls
+ * basierend auf Gerätetyp und Fensterbreite um.
+ *
+ * @param {HTMLElement} fullscreenToggle - Das Fullscreen-Toggle-Element.
+ * @param {HTMLElement} touchControls - Der Container der Touch-Controls.
+ */
+function updateControlsVisibility(fullscreenToggle, touchControls) {
+  const touch = isTouchDevice();
+  const mobileWidth = touch && window.innerWidth <= 1080;
+  if (!touch || !mobileWidth) {
+    fullscreenToggle.classList.remove('hidden');
+    touchControls.classList.add('hidden');
+  } else {
+    fullscreenToggle.classList.add('hidden');
+    touchControls.classList.remove('hidden');
+  }
+}
+
+/**
+ * Handler für den Endscreen-Restart-Button. Setzt das Spiel zurück und
+ * startet direkt neu, ohne ins Menü zurückzukehren.
+ *
+ * @param {object} refs - Sammlung aller wichtigen DOM-Referenzen.
+ * @param {HTMLElement} refs.menu - Das Menü-Element.
+ * @param {HTMLElement} refs.fullscreenToggle - Der Fullscreen-Toggle-Button.
+ * @param {HTMLElement} refs.touchControls - Der Container der Touch-Controls.
+ * @returns {Function}
+ */
+function restartEndHandler(refs) {
+  return () => {
+    world.resetGame();
+    world.deadTimestamp = null;
+    audio.stopAllSounds();
+    audio.clearRestartFlag();
+    document.getElementById('end_screen_buttons').classList.add('hidden');
+    refs.menu.style.display = 'none';
+    document.getElementById('canvas').classList.remove('hidden');
+    document.getElementById('hud-bar').classList.remove('hidden');
+    updateControlsVisibility(refs.fullscreenToggle, refs.touchControls);
+    gameStarted = true;
+  };
+}
+
+/**
+ * Registriert alle zentralen Event-Listener für die Anwendung:
+ * - Fenstergröße & Orientierung → Orientation-Check
+ * - Start-Button, Controls-Button, Options-Back-Button
+ * - Restart-Button (Hauptspiel) und Endscreen-Restart-Button
+ *
+ * @param {object} refs - Sammlung aller wichtigen DOM-Referenzen.
+ * @param {HTMLElement} refs.startBtn - Der Start-Button im Menü.
+ * @param {HTMLElement} refs.controlsBtn - Der Controls-Button im HUD.
+ * @param {HTMLElement} refs.optionsBackBtn - Der Zurück-Button in den Optionen.
+ * @param {Function} cbCheckOrientation - Callback, um bei Resize/Rotate die Anzeige anzupassen.
  */
 function setupEventListeners(refs, cbCheckOrientation) {
   window.addEventListener('resize', cbCheckOrientation);
@@ -155,6 +206,8 @@ function setupEventListeners(refs, cbCheckOrientation) {
   refs.optionsBackBtn.addEventListener('click', optionsBackHandler(refs));
   document.getElementById('restart-btn')
     .addEventListener('click', restartHandler(refs, cbCheckOrientation));
+  document.getElementById('end-restart-btn')
+    .addEventListener('click', restartEndHandler(refs));
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -171,8 +224,9 @@ document.addEventListener('DOMContentLoaded', () => {
     controlsBtn: document.getElementById('controls-btn'),
     optionsBackBtn: document.getElementById('options-back'),
     mainHeadline: document.getElementById('main_headline'),
+    menu: document.getElementById('menu'),
+    fullscreenToggle: document.getElementById('fullscreen-toggle'),
   };
-
   setupTouchControls(refs);
   setupEventListeners(refs, () => checkOrientation(refs));
   checkOrientation(refs);

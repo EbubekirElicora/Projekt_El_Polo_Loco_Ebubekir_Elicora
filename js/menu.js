@@ -7,11 +7,13 @@ function startGame() {
   audio.clearRestartFlag();
   document.getElementById('menu').classList.add('hidden');
   document.getElementById('canvas').classList.remove('hidden');
-  init();
   document.getElementById('fullscreen-toggle').classList.remove('hidden');
   document.getElementById('canvas-container').classList.remove('hidden');
   document.getElementById('hud-bar').classList.remove('hidden');
+  document.getElementById('main_headline').classList.remove('hidden');
+  init();
 }
+
 
 /**
  * Führt den Startbildschirm aus und zeigt danach das Menü.
@@ -95,7 +97,7 @@ function showMenuAndReset() {
   document.getElementById('options').classList.add('hidden');
   document.getElementById('legal_notice').classList.add('hidden');
   document.getElementById('privacy_policy').classList.add('hidden');
-  document.getElementById('menu').classList.remove('hidden');
+  document.getElementById('menu').style.setProperty('display', 'flex');
   document.getElementById('main_headline').classList.remove('hidden');
   document.getElementById('end_screen_buttons').classList.add('hidden');
   document.getElementById('canvas').classList.add('hidden');

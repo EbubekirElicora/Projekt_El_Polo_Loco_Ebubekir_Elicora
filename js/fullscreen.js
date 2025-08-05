@@ -1,17 +1,17 @@
 window.addEventListener('DOMContentLoaded', () => {
-  const fullscreenBtn    = document.getElementById('fullscreen-toggle');
-  const restartBtn       = document.getElementById('restart-btn');
-  const endButtons       = document.getElementById('end_screen_buttons');
-  const canvasContainer  = document.getElementById('canvas-container');
-  const canvas           = document.getElementById('canvas');
-  const hudBar           = document.getElementById('hud-bar');
-  const controlsBtn      = document.getElementById('controls-btn');
-  const optionsSection   = document.getElementById('options');
-  const menu             = document.getElementById('menu');
-  const mainHeadline     = document.getElementById('main_headline');
-  const backMenuBtn      = document.getElementById('back_menu');
-  const optionsBackBtn   = document.getElementById('options-back');
-  const audioButton      = document.getElementById('audio-btn');
+  const fullscreenBtn = document.getElementById('fullscreen-toggle');
+  const restartBtn = document.getElementById('restart-btn');
+  const endButtons = document.getElementById('end_screen_buttons');
+  const canvasContainer = document.getElementById('canvas-container');
+  const canvas = document.getElementById('canvas');
+  const hudBar = document.getElementById('hud-bar');
+  const controlsBtn = document.getElementById('controls-btn');
+  const optionsSection = document.getElementById('options');
+  const menu = document.getElementById('menu');
+  const mainHeadline = document.getElementById('main_headline');
+  const backMenuBtn = document.getElementById('back_menu');
+  const optionsBackBtn = document.getElementById('options-back');
+  const audioButton = document.getElementById('audio-btn');
 
   let optionsFromGame = false;
   let wasFullscreenBeforeOptions = false;
@@ -32,17 +32,17 @@ window.addEventListener('DOMContentLoaded', () => {
     controlsBtn.addEventListener('click', () => { world.pauseGame(); openOptionsFromGame(); });
     optionsBackBtn?.addEventListener('click', closeOptions);
     restartBtn?.addEventListener('click', restartGame);
+    document.getElementById('end-restart-btn')
+      ?.addEventListener('click', restartGameEnd);
     document.addEventListener('fullscreenchange', handleFullscreenChange);
   }
-
-  // ──────────────────────────────────────────────────────────────────────────
 
   /**
    * Schaltet Vollbild um.
    * @returns {void}
    */
   function toggleFullscreen() {
-    if (!isFullscreen()) enableFullscreen(); 
+    if (!isFullscreen()) enableFullscreen();
     else disableFullscreen();
   }
 
@@ -133,7 +133,7 @@ window.addEventListener('DOMContentLoaded', () => {
     fullscreenBtn.src = 'icons/smallScreen_icon.png';
     fullscreenBtn.style.width = '64px';
     fullscreenBtn.style.height = '64px';
-    endButtons.style.top = '92%';
+    endButtons.style.top = '90%';
     hudBar.classList.add('fullscreen-mode');
   }
 
@@ -162,6 +162,23 @@ window.addEventListener('DOMContentLoaded', () => {
       handleRestart();
     }
   }
+
+  /**
+ * Endscreen-Restart: Reset & direkt weiterspielen (kein Menü).
+ * @returns {void}
+ */
+  function restartGameEnd() {
+    world.resetGame();
+    world.deadTimestamp = null;
+    audio.stopAllSounds();
+    audio.clearRestartFlag();
+    endButtons.classList.add('hidden');
+    canvas.classList.remove('hidden');
+    hudBar.classList.remove('hidden');
+    menu.classList.remove('hidden');
+    world.resumeGame();
+  }
+
 
   /** Stoppt Sounds, resetet Character und ruft Menü-Return auf. */
   function handleRestart() {
