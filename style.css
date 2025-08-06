@@ -517,7 +517,7 @@ p {
     }
 
     .start_screen img {
-        width: 100%;
+        width: 100vw;
     }
 }
 
@@ -528,7 +528,7 @@ p {
     }
 
     .start_screen img {
-        width: 100%;
+        width: 100vw;
     }
 }
 

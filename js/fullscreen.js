@@ -12,19 +12,33 @@ window.addEventListener('DOMContentLoaded', () => {
   const backMenuBtn = document.getElementById('back_menu');
   const optionsBackBtn = document.getElementById('options-back');
   const audioButton = document.getElementById('audio-btn');
-
   let optionsFromGame = false;
   let wasFullscreenBeforeOptions = false;
-  let isCurrentlyMuted = false;
-
+  let isCurrentlyMuted = localStorage.getItem('isMuted') === 'true';
   initUI();
   setupEventListeners();
 
-  /** Fügt Click-Listener hinzu und initialisiert Icon-Hefter */
+  /**
+   * Initialisiert die UI-Elemente und setzt den Audio-Button-Status
+   * basierend auf dem gespeicherten Mute-Zustand.
+   *
+   * - Fügt das `white-icon`-Klassen-Icon für den Fullscreen-Button hinzu.
+   * - Registriert den Click-Listener für Vollbild-Umschaltung.
+   * - Aktualisiert das Audio-Icon je nach `isCurrentlyMuted`.
+   * - Registriert den Click-Listener für das Stummschalten.
+   * - Falls `isCurrentlyMuted` true, wird `audio.toggleMute()` aufgerufen,
+   *   um den Audio-Player in den richtigen Zustand zu versetzen.
+   *
+   * @returns {void}
+   */
   function initUI() {
     fullscreenBtn.classList.add('white-icon');
     fullscreenBtn.addEventListener('click', toggleFullscreen);
+    updateAudioIcon(isCurrentlyMuted);
     audioButton.addEventListener('click', toggleMute);
+    if (isCurrentlyMuted) {
+      audio.toggleMute();
+    }
   }
 
   /** Registriert alle weiteren Events */
@@ -44,6 +58,13 @@ window.addEventListener('DOMContentLoaded', () => {
   function toggleFullscreen() {
     if (!isFullscreen()) enableFullscreen();
     else disableFullscreen();
+  }
+
+  /** Aktualisiert das Icon je nach Mute-Status */
+  function updateAudioIcon(muted) {
+    audioButton.src = muted
+      ? 'icons/speaker_mute.png'
+      : 'icons/speaker.png';
   }
 
   /** Setzt Icon und aktiviert Fullscreen für das Canvas-Container-Element. */
@@ -164,9 +185,9 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   /**
- * Endscreen-Restart: Reset & direkt weiterspielen (kein Menü).
- * @returns {void}
- */
+   * Endscreen-Restart: Reset & direkt weiterspielen (kein Menü).
+   * @returns {void}
+   */
   function restartGameEnd() {
     world.resetGame();
     world.deadTimestamp = null;
@@ -179,7 +200,6 @@ window.addEventListener('DOMContentLoaded', () => {
     world.resumeGame();
   }
 
-
   /** Stoppt Sounds, resetet Character und ruft Menü-Return auf. */
   function handleRestart() {
     world.audio.stopAllSounds();
@@ -189,15 +209,21 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   /**
-   * Schaltet Ton ein/aus und ändert das Icon.
+   * Schaltet den Mute-Zustand um, synchronisiert Icon und LocalStorage.
+   *
+   * - Ruft `audio.toggleMute()` auf, um alle Sounds stumm/zurückzuschalten.
+   * - Liest den neuen Zustand aus `audio.isMuted` und speichert ihn in
+   *   `isCurrentlyMuted`.
+   * - Aktualisiert das Audio-Icon entsprechend.
+   * - Speichert den neuen Zustand in `localStorage` unter `'isMuted'`.
+   *
    * @returns {void}
    */
   function toggleMute() {
     audio.toggleMute();
-    isCurrentlyMuted = !isCurrentlyMuted;
-    audioButton.src = isCurrentlyMuted
-      ? 'icons/speaker_mute.png'
-      : 'icons/speaker.png';
+    isCurrentlyMuted = audio.isMuted;
+    updateAudioIcon(isCurrentlyMuted);
+    localStorage.setItem('isMuted', isCurrentlyMuted);
   }
 });
 

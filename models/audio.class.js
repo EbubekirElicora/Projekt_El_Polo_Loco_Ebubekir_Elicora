@@ -119,9 +119,15 @@ class AudioSounds {
   }
 
   /**
-   * Schaltet alle Sounds stumm oder zurück.
-   * Schaltet sowohl originale als auch geklonte Audios.
-   */
+  * Schaltet das Muten aller Sounds um und startet beim Ent­muten
+  * automatisch ausgewählte Loop-Sounds neu.
+  *
+  * - Wenn gemutet wird, bleiben alle originalen und geklonten Audios stumm.
+  * - Beim Ent­muten werden die Loops für `chickenRun` und `littleChickenRun`
+  *   neu gestartet, damit sie wieder hörbar sind.
+  *
+  * @returns {void}
+  */
   toggleMute() {
     this.isMuted = !this.isMuted;
     Object.values(this.originalAudioElements).forEach(audio => {
@@ -130,6 +136,10 @@ class AudioSounds {
     this.currentlyPlayingClonedAudios.forEach(clone => {
       clone.muted = this.isMuted;
     });
+    if (!this.isMuted) {
+      this.playOriginal('chickenRun', true);
+      this.playOriginal('littleChickenRun', true);
+    }
   }
 
   /**

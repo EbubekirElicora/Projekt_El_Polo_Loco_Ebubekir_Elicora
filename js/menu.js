@@ -14,7 +14,6 @@ function startGame() {
   init();
 }
 
-
 /**
  * Führt den Startbildschirm aus und zeigt danach das Menü.
  * @returns {void}
@@ -97,7 +96,8 @@ function showMenuAndReset() {
   document.getElementById('options').classList.add('hidden');
   document.getElementById('legal_notice').classList.add('hidden');
   document.getElementById('privacy_policy').classList.add('hidden');
-  document.getElementById('menu').style.setProperty('display', 'flex');
+  document.getElementById('menu').classList.remove('hidden');
+  document.getElementById('menu').style.removeProperty('display');  
   document.getElementById('main_headline').classList.remove('hidden');
   document.getElementById('end_screen_buttons').classList.add('hidden');
   document.getElementById('canvas').classList.add('hidden');
