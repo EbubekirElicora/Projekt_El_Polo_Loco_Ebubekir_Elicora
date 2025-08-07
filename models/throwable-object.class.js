@@ -34,7 +34,6 @@ class ThrowableObject extends MovableObject {
         this.speedY = 30;
         this.startGravity();
         this.startRotationAnimation();
-        this.startHorizontalMovement();
     }
 
     /** Startet die Schwerkraft-Logik für das Objekt */
@@ -53,12 +52,13 @@ class ThrowableObject extends MovableObject {
 
     /** Startet die horizontale Bewegungs-Logik des Objekts */
     startHorizontalMovement() {
+        const direction = this.world?.character.otherDirection ? -1 : 1;
         this.movementInterval = setInterval(() => {
             if (this.onGround || this.splashed) {
                 clearInterval(this.movementInterval);
                 return;
             }
-            this.x += 10;
+            this.x += 10 * direction;
         }, 25);
     }
 

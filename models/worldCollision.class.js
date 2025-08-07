@@ -153,14 +153,14 @@
     const now = Date.now();
     if (this.keyboard.D && this.bottleCount > 0 && now - this.lastBottleThrow > 1000) {
       this.lastBottleThrow = now;
-      let b = new ThrowableObject(this.character.x + 100, this.character.y + 100);
-      b.world = this;
+      const direction = this.character.otherDirection ? -1 : 1;
+      const b = new ThrowableObject(this.character.x + 100 * direction, this.character.y + 100);
+      b.world = this; b.direction = direction; b.startHorizontalMovement();
       this.throwableObjects.push(b);
-      this.bottleCount--;
-      this.level.statusBarBottle.setPercentage(this.bottleCount / 5 * 100);
+      this.level.statusBarBottle.setPercentage(--this.bottleCount / 5 * 100);
       this.audio.playOriginal('bottleThrow');
-    }
-  };
+      this.character.lastMoveTime = now;
+    }};
 })();
 
 /**
