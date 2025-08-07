@@ -1,42 +1,45 @@
-(function() {
+/**
+ * Prüft alle relevanten Kollisionen im Spiel (Feinde, Münzen, Flaschen, Treffer etc.).
+ * @returns {void}
+ */
+(function () {
   const worldCollision = window.World.prototype;
-
-  /**
-   * Prüft alle relevanten Kollisionen im Spiel (Feinde, Münzen, Flaschen, Treffer etc.).
-   * @returns {void}
-   */
-  worldCollision.checkCollisions = function() {
+  worldCollision.checkCollisions = function () {
     this.checkEnemyCollisions();
     this.checkLittleEnemyCollisions();
     this.collectCoinItems();
     this.collectBottleItems();
     this.checkBottleHits();
   };
+})();
 
-  /**
-   * Prüft Kollisionen mit Hauptfeinden (Chicken, Endboss).
-   * @returns {void}
-   */
-  worldCollision.checkEnemyCollisions = function() {
+/**
+ * Prüft Kollisionen mit Hauptfeinden (Chicken, Endboss).
+ * @returns {void}
+ */
+(function () {
+  const worldCollision = window.World.prototype;
+  worldCollision.checkEnemyCollisions = function () {
     this.level.enemies.forEach(enemy => {
       if (enemy instanceof Chicken) this.handleChickenCollision(enemy);
       else if (enemy instanceof Endboss) this.handleEndbossCollision(enemy);
     });
   };
+})();
 
-  /**
-   * Prüft Kollisionen mit kleinen Feinden.
-   * @returns {void}
-   */
-  worldCollision.checkLittleEnemyCollisions = function() {
+/**
+ * Prüft Kollisionen mit kleinen Feinden.
+ * @returns {void}
+ */
+(function () {
+  const worldCollision = window.World.prototype;
+  worldCollision.checkLittleEnemyCollisions = function () {
     this.level.little_enemies.forEach(enemy => {
       if (enemy.isDead || enemy.removeFromWorld) return;
       if (this.character.isColliding(enemy)) {
-        const isAbove = this.character.y + this.character.height <= enemy.y + enemy.height / 2;
-        const isFalling = this.character.speedY < 0;
-        if (isAbove && isFalling) {
-          enemy.die();
-          this.character.bounce();
+        const above = this.character.y + this.character.height <= enemy.y + enemy.height / 2;
+        if (above && this.character.speedY < 0) {
+          enemy.die(); this.character.bounce();
         } else {
           this.character.hit();
           this.level.statusBarHealth.setPercentage(this.character.energy);
@@ -44,44 +47,50 @@
       }
     });
   };
+})();
 
-  /**
-   * Behandelt die Kollision mit einem Chicken.
-   * @param {Chicken} enemy - Das Chicken-Objekt.
-   * @returns {void}
-   */
-  worldCollision.handleChickenCollision = function(enemy) {
+/**
+ * Behandelt die Kollision mit einem Chicken.
+ * @param {Chicken} enemy - Das Chicken-Objekt.
+ * @returns {void}
+ */
+(function () {
+  const worldCollision = window.World.prototype;
+  worldCollision.handleChickenCollision = function (enemy) {
     if (!enemy.isDead && !enemy.removeFromWorld && this.character.isColliding(enemy)) {
-      const isAbove = this.character.y + this.character.height <= enemy.y + enemy.height / 2;
-      const isFalling = this.character.speedY < 0;
-      if (isAbove && isFalling) {
-        enemy.die();
-        this.character.bounce();
+      const above = this.character.y + this.character.height <= enemy.y + enemy.height / 2;
+      if (above && this.character.speedY < 0) {
+        enemy.die(); this.character.bounce();
       } else {
         this.character.hit();
         this.level.statusBarHealth.setPercentage(this.character.energy);
       }
     }
   };
+})();
 
-  /**
-   * Behandelt die Kollision mit dem Endboss.
-   * @param {Endboss} enemy - Das Endboss-Objekt.
-   * @returns {void}
-   */
-  worldCollision.handleEndbossCollision = function(enemy) {
+/**
+ * Behandelt die Kollision mit dem Endboss.
+ * @param {Endboss} enemy - Das Endboss-Objekt.
+ * @returns {void}
+ */
+(function () {
+  const worldCollision = window.World.prototype;
+  worldCollision.handleEndbossCollision = function (enemy) {
     if (this.character.isColliding(enemy) && enemy.activated) {
-      enemy.collideAttack();
-      this.character.hit();
+      enemy.collideAttack(); this.character.hit();
       this.level.statusBarHealth.setPercentage(this.character.energy);
     }
   };
+})();
 
-  /**
-   * Sammeln von Münzen (prüft Kollision, spielt Sound ab).
-   * @returns {void}
-   */
-  worldCollision.collectCoinItems = function() {
+/**
+ * Sammeln von Münzen (prüft Kollision, spielt Sound ab).
+ * @returns {void}
+ */
+(function () {
+  const worldCollision = window.World.prototype;
+  worldCollision.collectCoinItems = function () {
     const before = this.coinCount;
     this.level.coins = this.collectItems({
       items: this.level.coins,
@@ -91,12 +100,15 @@
     });
     if (this.coinCount > before) this.audio.playOriginal('coinCollected');
   };
+})();
 
-  /**
-   * Sammeln von Flaschen (prüft Kollision, spielt Sound ab).
-   * @returns {void}
-   */
-  worldCollision.collectBottleItems = function() {
+/**
+ * Sammeln von Flaschen (prüft Kollision, spielt Sound ab).
+ * @returns {void}
+ */
+(function () {
+  const worldCollision = window.World.prototype;
+  worldCollision.collectBottleItems = function () {
     const before = this.bottleCount;
     this.level.bottles = this.collectItems({
       items: this.level.bottles,
@@ -106,17 +118,20 @@
     });
     if (this.bottleCount > before) this.audio.playOriginal('bottleCollect');
   };
+})();
 
-  /**
-   * Allgemeine Methode zum Sammeln von Items.
-   * @param {Object} params - Parameter-Objekt.
-   * @param {Array} params.items - Liste der zu sammelnden Items.
-   * @param {string} params.countKey - Name des Zählers im World-Objekt.
-   * @param {Object} params.statusBar - Statusleiste, die aktualisiert wird.
-   * @param {number} params.maxCount - Maximale Anzahl des Items.
-   * @returns {Array} Gefilterte Liste mit nicht eingesammelten Items.
-   */
-  worldCollision.collectItems = function({ items, countKey, statusBar, maxCount }) {
+/**
+ * Allgemeine Methode zum Sammeln von Items.
+ * @param {Object} params - Parameter-Objekt.
+ * @param {Array} params.items - Liste der zu sammelnden Items.
+ * @param {string} params.countKey - Name des Zählers im World-Objekt.
+ * @param {Object} params.statusBar - Statusleiste, die aktualisiert wird.
+ * @param {number} params.maxCount - Maximale Anzahl des Items.
+ * @returns {Array} Gefilterte Liste mit nicht eingesammelten Items.
+ */
+(function () {
+  const worldCollision = window.World.prototype;
+  worldCollision.collectItems = function ({ items, countKey, statusBar, maxCount }) {
     return items.filter(item => {
       if (this.character.isColliding(item)) {
         this[countKey]++;
@@ -126,12 +141,15 @@
       return true;
     });
   };
+})();
 
-  /**
-   * Prüft, ob Flaschen geworfen werden sollen und führt den Wurf aus.
-   * @returns {void}
-   */
-  worldCollision.checkThrowObjects = function() {
+/**
+ * Prüft, ob Flaschen geworfen werden sollen und führt den Wurf aus.
+ * @returns {void}
+ */
+(function () {
+  const worldCollision = window.World.prototype;
+  worldCollision.checkThrowObjects = function () {
     const now = Date.now();
     if (this.keyboard.D && this.bottleCount > 0 && now - this.lastBottleThrow > 1000) {
       this.lastBottleThrow = now;
@@ -143,25 +161,31 @@
       this.audio.playOriginal('bottleThrow');
     }
   };
+})();
 
-  /**
-   * Prüft alle Flaschen-Kollisionen.
-   * @returns {void}
-   */
-  worldCollision.checkBottleHits = function() {
+/**
+ * Prüft alle Flaschen-Kollisionen.
+ * @returns {void}
+ */
+(function () {
+  const worldCollision = window.World.prototype;
+  worldCollision.checkBottleHits = function () {
     for (let bottle of this.throwableObjects) {
       this.checkBottleHitChickens(bottle);
       this.checkBottleHitLittleChickens(bottle);
       this.checkBottleHitEndboss(bottle);
     }
   };
+})();
 
-  /**
-   * Prüft Flaschen-Kollision mit Hauptfeinden.
-   * @param {ThrowableObject} bottle - Geworfene Flasche.
-   * @returns {void}
-   */
-  worldCollision.checkBottleHitChickens = function(bottle) {
+/**
+ * Prüft Flaschen-Kollision mit Hauptfeinden.
+ * @param {ThrowableObject} bottle - Geworfene Flasche.
+ * @returns {void}
+ */
+(function () {
+  const worldCollision = window.World.prototype;
+  worldCollision.checkBottleHitChickens = function (bottle) {
     this.level.enemies.forEach(enemy => {
       if (enemy instanceof Chicken && this.shouldBottleAffectEnemy(bottle, enemy)) {
         enemy.die();
@@ -169,13 +193,16 @@
       }
     });
   };
+})();
 
-  /**
-   * Prüft Flaschen-Kollision mit kleinen Feinden.
-   * @param {ThrowableObject} bottle - Geworfene Flasche.
-   * @returns {void}
-   */
-  worldCollision.checkBottleHitLittleChickens = function(bottle) {
+/**
+ * Prüft Flaschen-Kollision mit kleinen Feinden.
+ * @param {ThrowableObject} bottle - Geworfene Flasche.
+ * @returns {void}
+ */
+(function () {
+  const worldCollision = window.World.prototype;
+  worldCollision.checkBottleHitLittleChickens = function (bottle) {
     this.level.little_enemies.forEach(enemy => {
       if (enemy instanceof LittleChicken && this.shouldBottleAffectEnemy(bottle, enemy)) {
         enemy.die();
@@ -183,13 +210,16 @@
       }
     });
   };
+})();
 
-  /**
-   * Prüft Flaschen-Kollision mit dem Endboss.
-   * @param {ThrowableObject} bottle - Geworfene Flasche.
-   * @returns {void}
-   */
-  worldCollision.checkBottleHitEndboss = function(bottle) {
+/**
+ * Prüft Flaschen-Kollision mit dem Endboss.
+ * @param {ThrowableObject} bottle - Geworfene Flasche.
+ * @returns {void}
+ */
+(function () {
+  const worldCollision = window.World.prototype;
+  worldCollision.checkBottleHitEndboss = function (bottle) {
     this.level.enemies.forEach(enemy => {
       if (enemy instanceof Endboss && this.shouldBottleAffectEnemy(bottle, enemy) && !enemy.isDead) {
         enemy.hit();
@@ -198,14 +228,17 @@
       }
     });
   };
+})();
 
-  /**
-   * Überprüft, ob eine Flasche einen Feind beeinflussen soll.
-   * @param {ThrowableObject} bottle - Geworfene Flasche.
-   * @param {Enemy} enemy - Potenzieller Gegner.
-   * @returns {boolean}
-   */
-  worldCollision.shouldBottleAffectEnemy = function(bottle, enemy) {
+/**
+ * Überprüft, ob eine Flasche einen Feind beeinflussen soll.
+ * @param {ThrowableObject} bottle - Geworfene Flasche.
+ * @param {Enemy} enemy - Potenzieller Gegner.
+ * @returns {boolean}
+ */
+(function () {
+  const worldCollision = window.World.prototype;
+  worldCollision.shouldBottleAffectEnemy = function (bottle, enemy) {
     const isEndboss = enemy instanceof Endboss;
     return bottle.isColliding(enemy) &&
       !bottle.splashed &&
@@ -213,12 +246,15 @@
       !bottle.onGround &&
       (!isEndboss || !bottle.onGround);
   };
+})();
 
-  /**
-   * Prüft, ob Charakter Feinde trifft (z.B. durch Draufspringen).
-   * @returns {void}
-   */
-  worldCollision.checkCharacterHitsEnemies = function() {
+/**
+ * Prüft, ob Charakter Feinde trifft (z.B. durch Draufspringen).
+ * @returns {void}
+ */
+(function () {
+  const worldCollision = window.World.prototype;
+  worldCollision.checkCharacterHitsEnemies = function () {
     const enemies = [...this.level.enemies, ...this.level.little_enemies];
     enemies.forEach(enemy => {
       if (!enemy.isDead && this.character.isColliding(enemy)) {
