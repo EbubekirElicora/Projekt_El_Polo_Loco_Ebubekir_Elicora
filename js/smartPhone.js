@@ -21,8 +21,6 @@ function showRotateOverlay(overlay, canvasContainer, whiteIcons, touchControls) 
   overlay.classList.remove('hidden');
   overlay.querySelector('.rotate-message').textContent =
     'Bitte drehe dein Handy ins Querformat um spielen zu können!';
-  canvasContainer.classList.add('hidden');
-  whiteIcons.forEach(el => el.classList.add('hidden'));
   touchControls.classList.add('hidden');
 }
 
@@ -136,8 +134,10 @@ function optionsBackHandler(refs) {
  */
 function restartHandler(refs, cbCheckOrientation) {
   return () => {
-    gameStarted = false;
+    gameStarted = true;
     refs.touchControls.style.setProperty('display', 'none', 'important');
+    refs.canvasContainer.classList.remove('hidden');
+    refs.hudBar.classList.remove('hidden');
     cbCheckOrientation();
   };
 }
@@ -179,10 +179,11 @@ function restartEndHandler(refs) {
     audio.clearRestartFlag();
     document.getElementById('end_screen_buttons').classList.add('hidden');
     refs.menu.style.display = 'none';
-    document.getElementById('canvas').classList.remove('hidden');
-    document.getElementById('hud-bar').classList.remove('hidden');
-    updateControlsVisibility(refs.fullscreenToggle, refs.touchControls);
+    refs.canvasContainer.querySelector('canvas').classList.remove('hidden');
+    refs.hudBar.classList.remove('hidden');
+    refs.touchControls.classList.remove('hidden');
     gameStarted = true;
+    checkOrientation(refs);
   };
 }
 
@@ -226,6 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
     mainHeadline: document.getElementById('main_headline'),
     menu: document.getElementById('menu'),
     fullscreenToggle: document.getElementById('fullscreen-toggle'),
+    hudBar: document.getElementById('hud-bar')
   };
   setupTouchControls(refs);
   setupEventListeners(refs, () => checkOrientation(refs));

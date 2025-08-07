@@ -40,7 +40,7 @@
     bottom: 18px;
   }
 
-    #touch-controls {
+  #touch-controls {
     display: flex;
     position: absolute;
     bottom: 0;
@@ -113,7 +113,7 @@
   #hud-bar {
     top: 5px;
     right: 5px;
-    gap: 8px;
+    gap: 16px;
   }
 
   .key-list {
@@ -201,12 +201,12 @@
 
 @media (max-width: 1080px) and (max-height: 350px) {
 
-    .menu button {
-      margin: 5px;
-    }
+  .menu button {
+    margin: 5px;
+  }
 
-    .key-list {
-      padding: 8px;
-      gap: 8px;
-    }
+  .key-list {
+    padding: 8px;
+    gap: 8px;
+  }
 }
