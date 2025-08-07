@@ -198,3 +198,15 @@
     opacity: 1;
   }
 }
+
+@media (max-width: 1080px) and (max-height: 350px) {
+
+    .menu button {
+      margin: 5px;
+    }
+
+    .key-list {
+      padding: 8px;
+      gap: 8px;
+    }
+}

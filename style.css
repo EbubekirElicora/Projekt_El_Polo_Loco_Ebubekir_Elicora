@@ -334,7 +334,7 @@ p {
 .gameOver_menu_btn:hover {
     background-color: #fff8e1;
     color: #5a3300;
-    border: 3px solid #5a3300;
+    border: 1px solid #5a3300;
     box-shadow: 0 0 15px rgba(255, 200, 100, 0.6),
         0 0 40px rgba(0, 255, 255, 0.2);
     transform: scale(1.03);

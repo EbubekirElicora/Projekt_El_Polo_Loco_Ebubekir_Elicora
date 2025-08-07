@@ -22,7 +22,7 @@ function runStartup() {
   showStartScreen();
   setTimeout(() => {
     showMenu();
-  }, 4000);
+  }, 2000);
 }
 
 /**

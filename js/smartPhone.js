@@ -64,7 +64,7 @@ function checkOrientation(refs) {
   const { overlay, canvasContainer, whiteIcons, touchControls } = refs;
   if (!overlay) return;
   const isTouch = isTouchDevice();
-  const isMobileWidth = isTouch && window.innerWidth <= 1200;
+  const isMobileWidth = isTouch && window.innerWidth <= 1400;
   const isPortrait = window.innerHeight > window.innerWidth;
   if (isMobileWidth && isPortrait) {
     showRotateOverlay(overlay, canvasContainer, whiteIcons, touchControls);
