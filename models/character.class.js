@@ -61,27 +61,75 @@ class Character extends MovableObject {
     }
 
     /**
-     * Verarbeitet Tastatureingaben und bewegt den Charakter.
-     * @private
+     * Verarbeitet die Bewegung des Charakters basierend auf Tastatureingaben.
+     * Beinhaltet Bewegung nach links/rechts, Springen und Boss-Begrenzung.
      */
     handleMovement() {
         this.moved = false;
+        const boss = this.getBoss();
+        this.handleRightMovement(boss);
+        this.handleLeftMovement();
+        this.handleJump();
+        if (this.moved) {
+            this.lastMoveTime = Date.now();
+        }
+    }
+
+    /**
+     * Sucht und gibt den Endboss im aktuellen Level zurück.
+     * @returns {Endboss|undefined} - Endboss-Instanz oder undefined, falls nicht vorhanden.
+     */
+    getBoss() {
+        return this.world.level.enemies.find(e => e instanceof Endboss);
+    }
+
+    /**
+     * Verarbeitet die Bewegung nach rechts.
+     * Wenn der Endboss aktiv ist, wird die Position auf eine Maximalgrenze beschränkt.
+     * @param {Endboss|undefined} boss - Referenz auf den Endboss, falls vorhanden.
+     */
+    handleRightMovement(boss) {
         if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
             this.otherDirection = false;
             this.moveRight();
             this.moved = true;
+            this.applyBossClamp(boss);
         }
+    }
+
+    /**
+     * Verarbeitet die Bewegung nach links.
+     */
+    handleLeftMovement() {
         if (this.world.keyboard.LEFT && this.x > 0) {
             this.otherDirection = true;
             this.moveLeft();
             this.moved = true;
         }
+    }
+
+    /**
+     * Führt einen Sprung aus, falls die Leertaste gedrückt wird und der Charakter am Boden ist.
+     */
+    handleJump() {
         if (this.world.keyboard.SPACE && !this.isAboveGround()) {
             this.jump();
             this.moved = true;
+            this.isJumpingSoundPlayed = false; // Reset hier für nächsten Sprung
         }
-        if (this.moved) {
-            this.lastMoveTime = Date.now();
+    }
+
+    /**
+     * Begrenzt die maximale X-Position des Charakters,
+     * sodass er den Endboss nicht überholen kann.
+     * @param {Endboss|undefined} boss - Referenz auf den Endboss, falls vorhanden.
+     */
+    applyBossClamp(boss) {
+        if (boss?.activated) {
+            const clampX = boss.x + boss.width / 2 - this.width / 2;
+            if (this.x > clampX) {
+                this.x = clampX;
+            }
         }
     }
 

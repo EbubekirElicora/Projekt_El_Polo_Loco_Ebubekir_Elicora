@@ -81,6 +81,7 @@ class AudioSounds {
     clone.currentTime = 0;
     this.playAudioSafe(clone);
     this.currentlyPlayingClonedAudios.push(clone);
+    console.log('[Audio] playCloned', soundName, '->', clone);
     return clone;
   }
 
@@ -100,6 +101,7 @@ class AudioSounds {
    * Setzt isGameRestarting-Flag, damit keine neuen Sounds starten.
    */
   stopAllSounds() {
+    console.log('[Audio] stopAllSounds, clonedCount=', this.currentlyPlayingClonedAudios.length);
     this.isGameRestarting = true;
     for (let key in this.originalAudioElements) {
       this.stopOriginal(key);

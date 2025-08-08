@@ -6,24 +6,16 @@ class Endboss extends MovableObject {
     height = 400;
     width = 250;
     x = 4500;
+    startX;
     y = 50;
     speed = 0;
     energy = 100;
-    isDead = false;
-    activated = false;
-    attacking = false;
-    isHurtAnimationRunning = false;
-    isAnimationFinished = false;
-    currentHurtFrame = 0;
-    currentDeadFrame = 0;
-    lastHit = 0;
-    hurtTimeout = null;
-
-    alertInterval = null;
-    hurtInterval = null;
-    deadInterval = null;
-    walkInterval = null;
-    moveInterval = null;
+    isDead = false; activated = false; attacking = false;
+    isHurtAnimationRunning = false; isAnimationFinished = false;
+    currentHurtFrame = 0; currentDeadFrame = 0; lastHit = 0;
+    hurtTimeout = null; alertInterval = null; hurtInterval = null;
+    deadInterval = null; walkInterval = null; moveInterval = null;
+    attackInterval = null;
 
     /**
      * Erstellt den Endboss und lädt alle Animationsbilder.
@@ -31,6 +23,7 @@ class Endboss extends MovableObject {
      */
     constructor(audio) {
         super(audio);
+        this.startX = this.x;
         this.endboss_images = endboss_images;
         this.loadImage(this.endboss_images.alert[0]);
         this.loadImages(this.endboss_images.alert);
@@ -49,6 +42,14 @@ class Endboss extends MovableObject {
         this.playAttackOnce(() => this.startWalking());
     }
 
+    /**
+     * Wie weit ist der Boss schon gelaufen?
+     */
+    get distanceMoved() {
+        return this.startX - this.x;
+    }
+
+
     /** Führt eine Angriffanimation bei Kollision aus */
     collideAttack() {
         if (this.attacking || this.isDead) return;
@@ -64,11 +65,16 @@ class Endboss extends MovableObject {
         this.attacking = true;
         let i = 0;
         const frames = this.endboss_images.attack;
-        const interval = setInterval(() => {
+        if (this.attackInterval) {
+            clearInterval(this.attackInterval);
+            this.attackInterval = null;
+        }
+        this.attackInterval = setInterval(() => {
             this.img = this.imageCache[frames[i]];
             i++;
             if (i >= frames.length) {
-                clearInterval(interval);
+                clearInterval(this.attackInterval);
+                this.attackInterval = null;
                 this.attacking = false;
                 if (callback) callback();
             }
@@ -202,6 +208,8 @@ class Endboss extends MovableObject {
         clearInterval(this.deadInterval);
         clearInterval(this.walkInterval);
         clearInterval(this.moveInterval);
+        clearInterval(this.attackInterval);
+        this.stopLoopingSound();
     }
 
     /** Bereinigt Animationen und Timer, wird extern aufgerufen */
@@ -209,7 +217,7 @@ class Endboss extends MovableObject {
         clearInterval(this.deadInterval);
         this.stopAllAnimations();
     }
-    
+
     /**
      * Liefert die Kollisionsbox des Endbosses für Trefferprüfungen.
      * @returns {{x: number, y: number, width: number, height: number}} Kollisionsrechteck

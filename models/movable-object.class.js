@@ -24,6 +24,8 @@ class MovableObject extends DrawableObject {
      * @param {string} soundName - Name des abzuspielenden Sounds
      */
     startLoopingSound(soundName) {
+        console.log('[Movable] startLoopingSound for', this.constructor.name, 'before:', this.currentAudioClone);
+        console.log('[Movable] stopLoopingSound for', this.constructor.name, 'current:', this.currentAudioClone);
         if (!this.audio) return;
         this.stopLoopingSound();
         this.currentAudioClone = this.audio.playCloned(soundName, true);
@@ -33,6 +35,8 @@ class MovableObject extends DrawableObject {
      * Stoppt den aktuell laufenden Loop-Sound.
      */
     stopLoopingSound() {
+        console.log('[Movable] startLoopingSound for', this.constructor.name, 'before:', this.currentAudioClone);
+        console.log('[Movable] stopLoopingSound for', this.constructor.name, 'current:', this.currentAudioClone);
         if (this.currentAudioClone) {
             this.currentAudioClone.pause();
             this.currentAudioClone.currentTime = 0;
@@ -52,8 +56,6 @@ class MovableObject extends DrawableObject {
         }
         this.stopLoopingSound();
     }
-
-    // ————————————— Physik / Schwerkraft —————————————
 
     /**
      * Startet die Schwerkraft-Simulation mit festem Intervall.
@@ -88,8 +90,6 @@ class MovableObject extends DrawableObject {
         this.handleLandingSound();
     }
 
-    // ————————————— Schaden & Energie —————————————
-
     /**
      * Verursacht Schaden am Objekt, wenn es nicht gerade unverwundbar ist.
      */
@@ -117,8 +117,6 @@ class MovableObject extends DrawableObject {
         return this.energy <= 0;
     }
 
-    // ————————————— Bewegung —————————————
-
     /**
      * Bewegt das Objekt nach rechts.
      */
@@ -139,8 +137,6 @@ class MovableObject extends DrawableObject {
     jump() {
         this.speedY = 35;
     }
-
-    // ————————————— Animation —————————————
 
     /**
      * Spielt eine Animation anhand eines Bildarrays ab.
