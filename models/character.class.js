@@ -12,6 +12,7 @@ class Character extends MovableObject {
     isFallingSoundPlaying = false;
     isJumpingSoundPlayed = false;
     hasPlayedHurtSound = false;
+    hasPlayedIdleSound = false;
     lastMoveTime = Date.now();
     currentTime = Date.now();
     animationFrameId = null;
@@ -175,6 +176,8 @@ class Character extends MovableObject {
         this.playAnimation(character_images.hurt);
         if (!this.hasPlayedHurtSound) {
             this.world.audio.playOriginal('characterHurt');
+            this.world.audio.stopOriginal('characterIdle');
+            this.hasPlayedIdleSound = false;
             this.hasPlayedHurtSound = true;
         }
         this.world.audio.stopOriginal('characterRun');
@@ -213,8 +216,16 @@ class Character extends MovableObject {
         this.world.audio.stopOriginal('characterRun');
         if (idleTime < 5000) {
             this.playAnimation(character_images.shortIdle);
+            if (this.hasPlayedIdleSound) {
+                this.world.audio.stopOriginal('characterIdle');
+                this.hasPlayedIdleSound = false;
+            }
         } else {
             this.playAnimation(character_images.longIdle);
+            if (!this.hasPlayedIdleSound) {
+                this.world.audio.playOriginal('characterIdle');
+                this.hasPlayedIdleSound = true;
+            }
         }
         this.hasPlayedHurtSound = false;
     }

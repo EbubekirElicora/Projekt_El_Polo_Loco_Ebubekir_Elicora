@@ -5,20 +5,10 @@
  */
 class AudioSounds {
   constructor() {
-    this.originalAudioElements = {
-      littleChickenRun: new Audio('audio/little_chicken_run.mp3'),
-      chickenRun: new Audio('audio/chicken_normal_run.mp3'),
-      characterRun: new Audio('audio/charakter_run.mp3'),
-      characterJump: new Audio('audio/charakter_jump.mp3'),
-      characterFall: new Audio('audio/charakter_falling.mp3'),
-      characterHurt: new Audio('audio/charakter_hurt.mp3'),
-      coinCollected: new Audio('audio/coin_collected.mp3'),
-      bottleSplash: new Audio('audio/bottle_splash.mp3'),
-      bottleCollect: new Audio('audio/bottle_collect.mp3'),
-      bottleThrow: new Audio('audio/bottle_throw.mp3'),
-      gameOver: new Audio('audio/gameOver.mp3'),
-      gameWon: new Audio('audio/gameWon.mp3'),
-    };
+    this.originalAudioElements = {};
+    for (const [key, path] of Object.entries(soundFiles)) {
+      this.originalAudioElements[key] = new Audio(path);
+    }
     this.currentlyPlayingClonedAudios = [];
     this.setInitialVolumes();
     this.isMuted = false;
@@ -37,7 +27,7 @@ class AudioSounds {
         audio.volume = 0.02;
       } else if (key === 'bottleCollect' || key === 'characterHurt' || key === 'characterFall' || key === 'bottleThrow') {
         audio.volume = 0.1;
-      } else if (key === 'characterRun') {
+      } else if (key === 'characterRun' || key === 'characterIdle') {
         audio.volume = 0.2;
       } else {
         audio.volume = 0.5;
@@ -157,3 +147,22 @@ class AudioSounds {
     }
   }
 }
+
+/**
+Alle Soundfiles
+ */
+const soundFiles = {
+  littleChickenRun: 'audio/little_chicken_run.mp3',
+  chickenRun: 'audio/chicken_normal_run.mp3',
+  characterRun: 'audio/charakter_run.mp3',
+  characterJump: 'audio/charakter_jump.mp3',
+  characterFall: 'audio/charakter_falling.mp3',
+  characterHurt: 'audio/charakter_hurt.mp3',
+  characterIdle: 'audio/charakter_idle.mp3',
+  coinCollected: 'audio/coin_collected.mp3',
+  bottleSplash: 'audio/bottle_splash.mp3',
+  bottleCollect: 'audio/bottle_collect.mp3',
+  bottleThrow: 'audio/bottle_throw.mp3',
+  gameOver: 'audio/gameOver.mp3',
+  gameWon: 'audio/gameWon.mp3',
+};
