@@ -116,7 +116,8 @@ class Character extends MovableObject {
         if (this.world.keyboard.SPACE && !this.isAboveGround()) {
             this.jump();
             this.moved = true;
-            this.isJumpingSoundPlayed = false; // Reset hier für nächsten Sprung
+            this.world.audio.playCloned('characterJump');
+            this.isJumpingSoundPlayed = true;
         }
     }
 
@@ -273,6 +274,7 @@ class Character extends MovableObject {
     }
 
     /**
+     * 
      * Prüft, ob der Charakter auf einem Gegner springt.
      * @param {MovableObject} enemy - Gegner-Objekt
      * @returns {boolean} true wenn springend auf dem Gegner

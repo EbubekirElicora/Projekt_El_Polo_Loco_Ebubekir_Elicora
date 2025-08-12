@@ -43,6 +43,7 @@ class Chicken extends MovableObject {
         this.isDead = true;
         this.speed = 0;
         this.stopLoopingSound('chickenRun');
+        if (this.audio) this.audio.playCloned('chickenDead');
         this.loadImage(this.enemies_normal_images.dead[0]);
         setTimeout(() => this.removeFromWorld = true, 1000);
     }

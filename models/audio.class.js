@@ -1,4 +1,23 @@
 /**
+Alle Soundfiles
+ */
+const soundFiles = {
+  littleChickenRun: 'audio/little_chicken_run.mp3',
+  chickenRun: 'audio/chicken_normal_run.mp3',
+  chickenDead: 'audio/chicken_dead.mp3',
+  characterRun: 'audio/charakter_run.mp3',
+  characterJump: 'audio/charakter_jump.mp3',
+  characterFall: 'audio/charakter_falling.mp3',
+  characterHurt: 'audio/charakter_hurt.mp3',
+  characterIdle: 'audio/charakter_idle.mp3',
+  coinCollected: 'audio/coin_collected.mp3',
+  bottleSplash: 'audio/bottle_splash.mp3',
+  bottleCollect: 'audio/bottle_collect.mp3',
+  bottleThrow: 'audio/bottle_throw.mp3',
+  gameOver: 'audio/gameOver.mp3',
+  gameWon: 'audio/gameWon.mp3',
+};
+/**
  * Klasse zur Verwaltung von Audio-Sounds im Spiel.
  * Unterstützt Original-Audios, geklonte Audios (für gleichzeitiges Abspielen),
  * Lautstärkeregelung, Muten und Neustart-Handling.
@@ -25,7 +44,7 @@ class AudioSounds {
       let audio = this.originalAudioElements[key];
       if (key === 'chickenRun' || key === 'littleChickenRun' || key === 'coinCollected') {
         audio.volume = 0.02;
-      } else if (key === 'bottleCollect' || key === 'characterHurt' || key === 'characterFall' || key === 'bottleThrow') {
+      } else if (key === 'bottleCollect' || key === 'characterHurt' || key === 'characterFall' || key === 'bottleThrow' || key === 'chickenDead') {
         audio.volume = 0.1;
       } else if (key === 'characterRun' || key === 'characterIdle') {
         audio.volume = 0.2;
@@ -148,21 +167,3 @@ class AudioSounds {
   }
 }
 
-/**
-Alle Soundfiles
- */
-const soundFiles = {
-  littleChickenRun: 'audio/little_chicken_run.mp3',
-  chickenRun: 'audio/chicken_normal_run.mp3',
-  characterRun: 'audio/charakter_run.mp3',
-  characterJump: 'audio/charakter_jump.mp3',
-  characterFall: 'audio/charakter_falling.mp3',
-  characterHurt: 'audio/charakter_hurt.mp3',
-  characterIdle: 'audio/charakter_idle.mp3',
-  coinCollected: 'audio/coin_collected.mp3',
-  bottleSplash: 'audio/bottle_splash.mp3',
-  bottleCollect: 'audio/bottle_collect.mp3',
-  bottleThrow: 'audio/bottle_throw.mp3',
-  gameOver: 'audio/gameOver.mp3',
-  gameWon: 'audio/gameWon.mp3',
-};

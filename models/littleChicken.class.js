@@ -49,7 +49,7 @@ class LittleChicken extends MovableObject {
         this.speed = 0;
         this.loadImage(this.enemies_little_images.dead[0]);
         this.stopLoopingSound('littleChickenRun');
-
+        if (this.audio) this.audio.playCloned('chickenDead');
         setTimeout(() => this.removeFromWorld = true, 1000);
     }
 

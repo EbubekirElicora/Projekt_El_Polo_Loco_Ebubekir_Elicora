@@ -162,6 +162,7 @@ function updateControlsVisibility(fullscreenToggle, touchControls) {
 }
 
 /**
+ * 
  * Handler für den Endscreen-Restart-Button. Setzt das Spiel zurück und
  * startet direkt neu, ohne ins Menü zurückzukehren.
  *
