@@ -69,17 +69,11 @@ class DrawableObject {
 
     /**
      * Zeichnet den Kollisionsrahmen (für Debugging).
-     * @param {CanvasRenderingContext2D} ctx
-     */
+     * @param {CanvasRenderingContext2D} ctx*/
     drawFrame(ctx) {
-        // Debug-Box für wichtige Objekte
         if (this instanceof Character
-            || this instanceof Chicken
-            || this instanceof LittleChicken
-            || this instanceof ThrowableObject
-            || this instanceof Coin
-            || this instanceof Bottle
-            || this instanceof Endboss) {
+            || this instanceof Chicken || this instanceof LittleChicken || this instanceof ThrowableObject
+            || this instanceof Coin || this instanceof Bottle || this instanceof Endboss) {
             const b = this.getCollisionBox();
             ctx.beginPath();
             ctx.lineWidth = 5;

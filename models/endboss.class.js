@@ -49,7 +49,6 @@ class Endboss extends MovableObject {
         return this.startX - this.x;
     }
 
-
     /** Führt eine Angriffanimation bei Kollision aus */
     collideAttack() {
         if (this.attacking || this.isDead) return;
@@ -97,6 +96,19 @@ class Endboss extends MovableObject {
     stopWalking() {
         clearInterval(this.walkInterval);
         clearInterval(this.moveInterval);
+        this.walkInterval = null;
+        this.moveInterval = null;
+    }
+
+    animate() {
+        if (this.isDead) return;
+        if (!this.activated) {
+            if (!this.alertInterval) this.animateAlert();
+            return;
+        }
+        if (this.activated && !this.walkInterval && !this.moveInterval) {
+            this.startWalking();
+        }
     }
 
     /** Wartet-Animation abspielen, wenn Boss noch nicht aktiviert oder verletzt */
@@ -209,6 +221,12 @@ class Endboss extends MovableObject {
         clearInterval(this.walkInterval);
         clearInterval(this.moveInterval);
         clearInterval(this.attackInterval);
+        this.alertInterval = null;
+        this.hurtInterval = null;
+        this.deadInterval = null;
+        this.walkInterval = null;
+        this.moveInterval = null;
+        this.attackInterval = null;
         this.stopLoopingSound();
     }
 

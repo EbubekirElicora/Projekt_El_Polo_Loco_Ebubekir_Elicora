@@ -3,7 +3,6 @@ let world;
 let keyboard = new Keyboard();
 let audio = new AudioSounds();
 
-
 /**
  * Initialisiert das Spiel, indem das Canvas geladen,
  * die Welt erstellt und das Hauptcharakter-Objekt ausgegeben wird.
@@ -16,7 +15,6 @@ function init() {
     document.addEventListener('fullscreenchange', () => world?.refreshEndScreenIfNeeded());
     window.addEventListener('resize', () => world?.refreshEndScreenIfNeeded());
 }
-
 
 /**
  * Event-Listener für Tastendruck. Setzt entsprechende Tastenflags im Keyboard-Objekt auf `true`.
@@ -73,5 +71,4 @@ window.addEventListener("keyup", (e) => {
     if (e.keyCode == 68) {
         keyboard.D = false;
     }
-
 })

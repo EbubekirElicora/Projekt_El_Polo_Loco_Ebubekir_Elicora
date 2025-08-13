@@ -228,8 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
     mainHeadline: document.getElementById('main_headline'),
     menu: document.getElementById('menu'),
     fullscreenToggle: document.getElementById('fullscreen-toggle'),
-    hudBar: document.getElementById('hud-bar')
-  };
+    hudBar: document.getElementById('hud-bar')};
   setupTouchControls(refs);
   setupEventListeners(refs, () => checkOrientation(refs));
   checkOrientation(refs);

@@ -97,7 +97,7 @@ function showMenuAndReset() {
   document.getElementById('legal_notice').classList.add('hidden');
   document.getElementById('privacy_policy').classList.add('hidden');
   document.getElementById('menu').classList.remove('hidden');
-  document.getElementById('menu').style.removeProperty('display');  
+  document.getElementById('menu').style.removeProperty('display');
   document.getElementById('main_headline').classList.remove('hidden');
   document.getElementById('end_screen_buttons').classList.add('hidden');
   document.getElementById('canvas').classList.add('hidden');
@@ -105,8 +105,7 @@ function showMenuAndReset() {
   document.getElementById('hud-bar').classList.add('hidden');
   if (typeof world !== 'undefined' && world !== null) {
     world.resetGame();
-    world.deadTimestamp = null;
-  }
+    world.deadTimestamp = null;}
   audio.stopAllSounds();
   audio.clearRestartFlag();
 }

@@ -3,23 +3,12 @@ class World {
     gameOverImg = new GameOver();
     gameWonImg = new GameWon();
     level = level1;
-    canvas;
-    ctx;
-    keyboard;
-    audio;
-    animationFrameId;
-    intervalId;
-    camera_x = 0;
-    coinCount = 0;
-    bottleCount = 0;
-    lastBottleThrow = 0;
-    throwableObjects = [];
-    isGameOver = false;
-    isGameWon = false;
-    isPaused = false;
-    hasPlayedGameOverSound = false;
-    hasPlayedGameWonSound = false;
+    canvas; ctx; keyboard; audio; animationFrameId; intervalId;
+    camera_x = 0; coinCount = 0; bottleCount = 0; lastBottleThrow = 0;
+    isGameOver = false; isGameWon = false; isPaused = false;
+    hasPlayedGameOverSound = false; hasPlayedGameWonSound = false;
     deadTimestamp = null;
+    throwableObjects = [];
 
     /**
      * Erstellt eine neue Spielwelt.

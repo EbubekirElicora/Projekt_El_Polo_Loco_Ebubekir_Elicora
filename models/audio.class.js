@@ -17,6 +17,7 @@ const soundFiles = {
   gameOver: 'audio/gameOver.mp3',
   gameWon: 'audio/gameWon.mp3',
 };
+
 /**
  * Klasse zur Verwaltung von Audio-Sounds im Spiel.
  * Unterstützt Original-Audios, geklonte Audios (für gleichzeitiges Abspielen),
@@ -44,7 +45,7 @@ class AudioSounds {
       let audio = this.originalAudioElements[key];
       if (key === 'chickenRun' || key === 'littleChickenRun' || key === 'coinCollected') {
         audio.volume = 0.02;
-      } else if (key === 'bottleCollect' || key === 'characterHurt' || key === 'characterFall' || key === 'bottleThrow' || key === 'chickenDead') {
+      } else if (key === 'bottleCollect' || key === 'characterHurt' || key === 'characterFall' || key === 'bottleThrow' || key === 'chickenDead' || key === 'characterJump') {
         audio.volume = 0.1;
       } else if (key === 'characterRun' || key === 'characterIdle') {
         audio.volume = 0.2;
@@ -83,14 +84,12 @@ class AudioSounds {
     if (this.isMuted || this.isGameRestarting) return null;
     const original = this.originalAudioElements[soundName];
     if (!original) return null;
-
     const clone = original.cloneNode();
     clone.loop = shouldLoop;
     clone.volume = original.volume;
     clone.currentTime = 0;
     this.playAudioSafe(clone);
     this.currentlyPlayingClonedAudios.push(clone);
-    console.log('[Audio] playCloned', soundName, '->', clone);
     return clone;
   }
 
@@ -110,7 +109,6 @@ class AudioSounds {
    * Setzt isGameRestarting-Flag, damit keine neuen Sounds starten.
    */
   stopAllSounds() {
-    console.log('[Audio] stopAllSounds, clonedCount=', this.currentlyPlayingClonedAudios.length);
     this.isGameRestarting = true;
     for (let key in this.originalAudioElements) {
       this.stopOriginal(key);
@@ -166,4 +164,3 @@ class AudioSounds {
     }
   }
 }
-

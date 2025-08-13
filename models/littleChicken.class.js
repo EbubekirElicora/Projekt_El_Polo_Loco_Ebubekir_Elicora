@@ -33,11 +33,9 @@ class LittleChicken extends MovableObject {
         this.moveInterval = setInterval(() => {
             if (!this.isDead) this.moveLeft();
         }, 1000 / 60);
-
         this.walkInterval = setInterval(() => {
             if (!this.isDead) this.playAnimation(this.enemies_little_images.walking);
         }, 100);
-
         this.startLoopingSound('littleChickenRun', true);
     }
 

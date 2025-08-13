@@ -65,7 +65,6 @@ class GameReset {
         const bottle = this.world.level.statusBarBottle;
         const coin = this.world.level.statusBarCoin;
         const endboss = this.world.level.enemies.find(e => e instanceof Endboss);
-
         health.setPercentage(this.world.character.energy);
         bottle.setPercentage(0);
         coin.setPercentage(0);

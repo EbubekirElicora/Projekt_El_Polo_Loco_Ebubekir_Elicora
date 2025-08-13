@@ -116,7 +116,7 @@
       statusBar: this.level.statusBarBottle,
       maxCount: 5
     });
-    if (this.bottleCount > before) this.audio.playOriginal('bottleCollect');
+    if (this.bottleCount > before) this.audio.playCloned('bottleCollect');
   };
 })();
 
@@ -158,7 +158,7 @@
       b.world = this; b.direction = direction; b.startHorizontalMovement();
       this.throwableObjects.push(b);
       this.level.statusBarBottle.setPercentage(--this.bottleCount / 5 * 100);
-      this.audio.playOriginal('bottleThrow');
+      this.audio.playCloned('bottleThrow');
       this.character.lastMoveTime = now;
     }};
 })();

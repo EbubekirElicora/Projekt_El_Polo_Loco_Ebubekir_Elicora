@@ -35,16 +35,8 @@ class Level {
      * @param {StatusBar} statusBarEndboss - Lebensanzeige des Endgegners.
      */
     constructor(
-        enemies,
-        little_enemies,
-        clouds,
-        backgroundObjects,
-        coins,
-        bottles,
-        statusBarHealth,
-        statusBarBottle,
-        statusBarCoin,
-        statusBarEndboss
+        enemies, little_enemies, clouds, backgroundObjects,
+        coins, bottles, statusBarHealth, statusBarBottle, statusBarCoin, statusBarEndboss
     ) {
         this.enemies = enemies;
         this.little_enemies = little_enemies;

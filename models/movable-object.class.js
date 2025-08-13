@@ -24,8 +24,6 @@ class MovableObject extends DrawableObject {
      * @param {string} soundName - Name des abzuspielenden Sounds
      */
     startLoopingSound(soundName) {
-        console.log('[Movable] startLoopingSound for', this.constructor.name, 'before:', this.currentAudioClone);
-        console.log('[Movable] stopLoopingSound for', this.constructor.name, 'current:', this.currentAudioClone);
         if (!this.audio) return;
         this.stopLoopingSound();
         this.currentAudioClone = this.audio.playCloned(soundName, true);
@@ -35,8 +33,6 @@ class MovableObject extends DrawableObject {
      * Stoppt den aktuell laufenden Loop-Sound.
      */
     stopLoopingSound() {
-        console.log('[Movable] startLoopingSound for', this.constructor.name, 'before:', this.currentAudioClone);
-        console.log('[Movable] stopLoopingSound for', this.constructor.name, 'current:', this.currentAudioClone);
         if (this.currentAudioClone) {
             this.currentAudioClone.pause();
             this.currentAudioClone.currentTime = 0;
