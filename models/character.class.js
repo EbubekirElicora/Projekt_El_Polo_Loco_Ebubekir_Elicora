@@ -8,6 +8,7 @@ class Character extends MovableObject {
     speed = 8;
     world;
     lastAnimationUpdate = 0;
+    hurtSoundCooldown = 0;
     moved = false;
     isFallingSoundPlaying = false;
     isJumpingSoundPlayed = false;
@@ -175,11 +176,12 @@ class Character extends MovableObject {
      */
     _onHurt() {
         this.playAnimation(character_images.hurt);
-        if (!this.hasPlayedHurtSound) {
+        let now = Date.now();
+        if (now - this.hurtSoundCooldown > 60) {
             this.world.audio.playOriginal('characterHurt');
             this.world.audio.stopOriginal('characterIdle');
             this.hasPlayedIdleSound = false;
-            this.hasPlayedHurtSound = true;
+            this.hurtSoundCooldown = now;
         }
         this.world.audio.stopOriginal('characterRun');
         this.world.audio.stopOriginal('characterFall');

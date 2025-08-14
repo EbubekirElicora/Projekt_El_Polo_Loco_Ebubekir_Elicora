@@ -42,6 +42,7 @@
           enemy.die(); this.character.bounce();
         } else {
           this.character.hit();
+          this.character.hasPlayedHurtSound = false;
           this.level.statusBarHealth.setPercentage(this.character.energy);
         }
       }
@@ -63,6 +64,7 @@
         enemy.die(); this.character.bounce();
       } else {
         this.character.hit();
+        this.character.hasPlayedHurtSound = false;
         this.level.statusBarHealth.setPercentage(this.character.energy);
       }
     }
@@ -78,7 +80,9 @@
   const worldCollision = window.World.prototype;
   worldCollision.handleEndbossCollision = function (enemy) {
     if (this.character.isColliding(enemy) && enemy.activated) {
-      enemy.collideAttack(); this.character.hit();
+      enemy.collideAttack(); 
+      this.character.hit();
+      this.character.hasPlayedHurtSound = false;
       this.level.statusBarHealth.setPercentage(this.character.energy);
     }
   };
