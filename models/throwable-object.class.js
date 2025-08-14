@@ -85,7 +85,7 @@ class ThrowableObject extends MovableObject {
         this.stopAllIntervals();
         this.playAnimation(this.splashImages);
         if (this.world?.audio) {
-            this.world.audio.playOriginal('bottleSplash');
+            this.world.audio.playCloned('bottleSplash');
         }
         setTimeout(() => this.removeFromWorld = true, 500);
     }

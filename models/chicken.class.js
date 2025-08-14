@@ -43,11 +43,11 @@ class Chicken extends MovableObject {
     /**
      * Kills the chicken, stops movement and sound, and shows dead animation.
      */
-    die() {
+    die(playSound = true) {
         this.isDead = true;
         this.speed = 0;
         this.stopLoopingSound('chickenRun');
-        if (this.audio) this.audio.playCloned('chickenDead');
+        if (this.audio && playSound) this.audio.playCloned('chickenDead');
         this.loadImage(this.enemies_normal_images.dead[0]);
         setTimeout(() => this.removeFromWorld = true, 1000);
     }

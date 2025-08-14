@@ -197,7 +197,7 @@
   worldCollision.checkBottleHitChickens = function (bottle) {
     this.level.enemies.forEach(enemy => {
       if (enemy instanceof Chicken && this.shouldBottleAffectEnemy(bottle, enemy)) {
-        enemy.die();
+        enemy.die(false);
         bottle.splash();
       }
     });
@@ -214,7 +214,7 @@
   worldCollision.checkBottleHitLittleChickens = function (bottle) {
     this.level.little_enemies.forEach(enemy => {
       if (enemy instanceof LittleChicken && this.shouldBottleAffectEnemy(bottle, enemy)) {
-        enemy.die();
+        enemy.die(false);
         bottle.splash();
       }
     });

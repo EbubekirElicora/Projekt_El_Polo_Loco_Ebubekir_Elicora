@@ -43,12 +43,12 @@ class LittleChicken extends MovableObject {
     /**
      * Kills the chicken (changes sprite, stops movement + sound, and schedules removal).
      */
-    die() {
+    die(playSound = true) {
         this.isDead = true;
         this.speed = 0;
         this.loadImage(this.enemies_little_images.dead[0]);
         this.stopLoopingSound('littleChickenRun');
-        if (this.audio) this.audio.playCloned('chickenDead');
+        if (this.audio && playSound) this.audio.playCloned('chickenDead');
         setTimeout(() => this.removeFromWorld = true, 1000);
     }
 
