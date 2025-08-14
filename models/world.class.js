@@ -1,3 +1,12 @@
+/**
+ * Represents the main game world, including the player character, enemies,
+ * level data, rendering, and game state management.
+ * The World class is responsible for:
+ * - Drawing and updating all objects in the game
+ * - Handling collisions, object collection, and enemy removal
+ * - Managing camera position, UI elements, and end screens
+ * - Pausing, resuming, and resetting the game
+ */
 class World {
     character = new Character();
     gameOverImg = new GameOver();
@@ -10,12 +19,6 @@ class World {
     deadTimestamp = null;
     throwableObjects = [];
 
-    /**
-     * Erstellt eine neue Spielwelt.
-     * @param {HTMLCanvasElement} canvas - Das Canvas-Element für die Anzeige.
-     * @param {Keyboard} keyboard - Die Tastatursteuerung.
-     * @param {AudioController} audio - Audio-Controller für Sounds.
-     */
     constructor(canvas, keyboard, audio) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
@@ -27,7 +30,8 @@ class World {
     }
 
     /**
-     * Verknüpft den Charakter mit der Welt und startet die Prüfung auf Treffer bei Gegnern mit 60fps.
+     * Links the character to the world and starts enemy hit detection.
+     * Runs at 60 frames per second.
      */
     setWorld() {
         this.character.world = this;
@@ -37,7 +41,7 @@ class World {
     }
 
     /**
-     * Startet die Haupt-Logik-Schleife des Spiels, die alle 100ms aufgerufen wird.
+     * Starts the main game logic loop that runs every 100ms.
      */
     startGameLoop() {
         this.intervalId = setInterval(() => {
@@ -54,7 +58,7 @@ class World {
     }
 
     /**
-     * Startet den Endboss-Kampf, wenn der Spieler eine bestimmte Position überschritten hat.
+     * Checks if the player has triggered the end boss battle.
      */
     checkEndbossTrigger() {
         const boss = this.level.enemies.find(e => e instanceof Endboss);
@@ -65,7 +69,7 @@ class World {
     }
 
     /**
-     * Aktualisiert alle geworfenen Objekte (Position, Animation usw.).
+     * Updates all throwable objects (movement, animation, etc.).
      */
     updateThrowables() {
         this.throwableObjects.forEach(bottle => {
@@ -74,7 +78,7 @@ class World {
     }
 
     /**
-     * Prüft, ob der Charakter Flaschen auf dem Boden aufsammelt und aktualisiert den Zähler.
+     * Collects throwable bottles from the ground when the character collides with them.
      */
     collectThrowableBottles() {
         this.throwableObjects = this.throwableObjects.filter(bottle => {
@@ -88,7 +92,7 @@ class World {
     }
 
     /**
-     * Entfernt Flaschen aus der Liste, die nicht mehr im Spiel sein sollen.
+     * Removes throwable objects that should no longer exist in the game.
      */
     removeUsedThrowables() {
         let remaining = [];
@@ -99,14 +103,14 @@ class World {
     }
 
     /**
-     * Entfernt tote Hauptfeinde aus dem Level.
+     * Removes dead main enemies from the level.
      */
     removeDeadEnemies() {
         this.level.enemies = this.level.enemies.filter(e => !e.removeFromWorld);
     }
 
     /**
-     * Entfernt tote kleine Feinde aus dem Level.
+     * Removes dead small enemies from the level.
      */
     removeDeadLittleEnemies() {
         for (let i = this.level.little_enemies.length - 1; i >= 0; i--) {
@@ -117,15 +121,14 @@ class World {
     }
 
     /**
-     * Animiert Münzen durch eine Rotation für einen besseren optischen Effekt.
+     * Rotates coins for a spinning visual effect.
      */
     coinSpin() {
         this.level.coins.forEach(coin => coin.rotation += 0.2);
     }
 
     /**
-     * Startet den Render-/Zeichen-Loop und zeichnet alle sichtbaren Objekte.
-     * Bricht ab, falls Game Over oder Sieg angezeigt werden soll.
+     * Draws all visible objects and handles end-game screens.
      */
     draw() {
         this.clearCanvas();
@@ -138,21 +141,21 @@ class World {
     }
 
     /**
-     * Löscht den gesamten Canvas-Bereich.
+     * Clears the entire canvas area.
      */
     clearCanvas() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
     /**
-     * Verschiebt die Zeichenfläche horizontal entsprechend der Kamera-Position.
+     * Moves the camera horizontally by translating the canvas context.
      */
     translateCamera() {
         this.ctx.translate(this.camera_x, 0);
     }
 
     /**
-     * Zeichnet alle Welt-Objekte (Hintergrund, Wolken, Münzen, Flaschen, Charakter, Gegner etc.).
+     * Draws all world objects including background, characters, enemies, and collectibles.
      */
     drawWorldObjects() {
         this.addObjectsToMap(this.level.backgroundObjects);
@@ -167,14 +170,14 @@ class World {
     }
 
     /**
-     * Setzt die Kamera-Transformation zurück (zurück zum Ursprung).
+     * Resets the camera transformation back to the origin.
      */
     resetCamera() {
         this.ctx.translate(-this.camera_x, 0);
     }
 
     /**
-     * Zeichnet die UI-Elemente (Lebensbalken, Flaschenanzahl, Münzanzahl).
+     * Draws UI elements such as health, bottles, and coins.
      */
     drawUI() {
         this.addToMap(this.level.statusBarHealth);
@@ -183,16 +186,15 @@ class World {
     }
 
     /**
-     * Fordert den Browser auf, den nächsten Frame zu rendern.
-     * Ruft rekursiv die draw()-Methode auf.
+     * Requests the next animation frame to continue rendering.
      */
     drawNextFrame() {
         this.animationFrameId = requestAnimationFrame(() => this.draw());
     }
 
     /**
-     * Prüft, ob Game Over oder Sieg angezeigt werden soll.
-     * @returns {boolean} true wenn Game Over oder Sieg angezeigt wird, sonst false.
+     * Checks whether to display the Game Over or Game Won screen.
+     * @returns {boolean} True if end screen should be displayed, otherwise false.
      */
     shouldDisplayGameOver() {
         if (this.isGameOver) return true;
@@ -207,8 +209,8 @@ class World {
     }
 
     /**
-     * Verzögert das Anzeigen des Game Over Bildschirms um 600ms nach dem Tod.
-     * @returns {boolean} true wenn Game Over angezeigt werden soll, sonst false.
+     * Delays the Game Over screen by 600ms after character death.
+     * @returns {boolean} True if Game Over should be displayed.
      */
     handleDeathDelay() {
         if (this.deadTimestamp === null) {
@@ -223,8 +225,8 @@ class World {
     }
 
     /**
-     * Prüft, ob der Spieler das Spiel gewonnen hat.
-     * @returns {boolean} true wenn Sieg, sonst false.
+     * Checks if the player has won the game.
+     * @returns {boolean} True if the game is won.
      */
     checkWin() {
         if (this.isGameWon) return true;
@@ -236,8 +238,8 @@ class World {
     }
 
     /**
-     * Win-Bedingung: Endboss ist tot und Animationssequenz ist fertig.
-     * @returns {boolean} true wenn Sieg-Bedingung erfüllt ist.
+     * Checks the win condition: Endboss is dead and the animation is complete.
+     * @returns {boolean} True if win condition is met.
      */
     checkWinCondition() {
         const boss = this.level.enemies.find(e => e instanceof Endboss);
@@ -245,7 +247,7 @@ class World {
     }
 
     /**
-     * Zeigt den Game Over Bildschirm an, pausiert das Spiel und spielt Sound ab.
+     * Displays the Game Over screen, pauses the game, and plays the sound.
      */
     displayGameOver() {
         this.pauseGame();
@@ -259,7 +261,7 @@ class World {
     }
 
     /**
-     * Zeigt den Sieges-Bildschirm an, pausiert das Spiel und spielt Sound ab.
+     * Displays the Game Won screen, pauses the game, and plays the sound.
      */
     displayGameWon() {
         this.pauseGame();
@@ -273,18 +275,18 @@ class World {
     }
 
     /**
-     * Zeichnet einen Endscreen (Game Over oder Sieg) und zeigt Buttons an.
-     * @param {object} image Bildobjekt mit draw(ctx)-Methode.
+     * Draws an end screen image and shows control buttons.
+     * @param {object} image - An object with a draw(ctx) method.
      */
     displayEndScreen(image) {
-        this.ctx.setTransform(1, 0, 0, 1, 0, 0); // Reset Transformation
+        this.ctx.setTransform(1, 0, 0, 1, 0, 0); // Reset transformation
         this.clearCanvas();
         image.draw(this.ctx);
         showEndScreenButtons();
     }
 
     /**
-     * Zeigt die Lebensleiste des Endbosses an, wenn dieser aktiv ist und lebt.
+     * Displays the end boss health bar if active and alive.
      */
     displayEndbossBarIfNeeded() {
         const boss = this.level.enemies.find(e => e instanceof Endboss);
@@ -296,7 +298,7 @@ class World {
     }
 
     /**
-     * Aktualisiert den Endscreen bei Bedarf (Game Over oder Sieg).
+     * Refreshes the end screen if necessary (Game Over or Game Won).
      */
     refreshEndScreenIfNeeded() {
         if (this.isGameOver || this.character?.energy <= 0) {
@@ -307,16 +309,16 @@ class World {
     }
 
     /**
-     * Fügt eine Liste von Objekten zum Zeichnen hinzu.
-     * @param {Array} objects Liste von zeichnbaren Objekten.
+     * Adds multiple objects to the rendering map.
+     * @param {Array} objects - Array of drawable objects.
      */
     addObjectsToMap(objects) {
         objects.forEach(o => this.addToMap(o));
     }
 
     /**
-     * Zeichnet ein Objekt auf den Canvas, inklusive Flip bei "otherDirection".
-     * @param {object} obj Zeichenbares Objekt mit draw(ctx)-Methode.
+     * Draws an object on the canvas, flipping if necessary.
+     * @param {object} obj - Drawable object with draw(ctx) and drawFrame(ctx) methods.
      */
     addToMap(obj) {
         if (obj.otherDirection) this.flipImage(obj);
@@ -326,8 +328,8 @@ class World {
     }
 
     /**
-     * Spiegelt das Canvas horizontal, um Objekte in "otherDirection" zu zeichnen.
-     * @param {object} obj Objekt mit x und width für die Transformation.
+     * Flips the canvas horizontally for drawing an object.
+     * @param {object} obj - Object containing x and width for transformation.
      */
     flipImage(obj) {
         this.ctx.save();
@@ -337,21 +339,21 @@ class World {
     }
 
     /**
-     * Setzt die Canvas-Transformation nach flipImage zurück.
+     * Restores the canvas after flipping.
      */
     flipImageBack() {
         this.ctx.restore();
     }
 
     /**
-     * Startet einen Reset des Spiels (via externer Klasse GameReset).
+     * Resets the game state via GameReset class.
      */
     resetGame() {
         new GameReset(this).resetGame();
     }
 
     /**
-     * Pausiert das Spiel: Stoppt Animation, Intervalle, Sound und setzt Flag.
+     * Pauses the game by stopping loops, animations, and sounds.
      */
     pauseGame() {
         if (this.isPaused) return;
@@ -366,7 +368,7 @@ class World {
     }
 
     /**
-     * Setzt das Spiel fort: startet Loop und Animationen wieder.
+     * Resumes the game by restarting loops and animations.
      */
     resumeGame() {
         if (!this.isPaused) return;
@@ -380,5 +382,4 @@ class World {
         this.level.little_enemies.forEach(e => e.animate?.());
     }
 }
-
 window.World = World;

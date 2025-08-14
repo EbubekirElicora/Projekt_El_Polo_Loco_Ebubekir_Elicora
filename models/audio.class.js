@@ -1,5 +1,5 @@
 /**
-Alle Soundfiles
+ * All sound files used in the game.
  */
 const soundFiles = {
   littleChickenRun: 'audio/little_chicken_run.mp3',
@@ -19,9 +19,9 @@ const soundFiles = {
 };
 
 /**
- * Klasse zur Verwaltung von Audio-Sounds im Spiel.
- * Unterstützt Original-Audios, geklonte Audios (für gleichzeitiges Abspielen),
- * Lautstärkeregelung, Muten und Neustart-Handling.
+ * Class for managing audio sounds in the game.
+ * Supports original audio, cloned audio (for simultaneous playback),
+ * volume control, muting, and restart handling.
  */
 class AudioSounds {
   constructor() {
@@ -36,9 +36,10 @@ class AudioSounds {
   }
 
   /**
-   * Setzt die initialen Lautstärken der Original-Audios,
-   * abgestimmt auf die Art des Sounds.
+   * Sets the initial volumes for original audios,
+   * adjusted to the type of sound.
    * @private
+   * @returns {void}
    */
   setInitialVolumes() {
     for (let key in this.originalAudioElements) {
@@ -56,16 +57,16 @@ class AudioSounds {
   }
 
   /**
-   * Spielt ein Original-Audio ab, wenn es noch nicht läuft.
-   * Überspringt Abspielen, wenn gemutet oder Spiel neustartet.
-   * @param {string} soundName - Name des Sounds, z.B. 'characterRun'
-   * @param {boolean} [shouldLoop=false] - Ob der Sound geloopt werden soll.
+   * Plays an original audio if it is not already playing.
+   * Skips playback if muted or if the game is restarting.
+   * @param {string} soundName - The name of the sound (e.g., 'characterRun').
+   * @param {boolean} [shouldLoop=false] - Whether the sound should loop.
+   * @returns {void}
    */
   playOriginal(soundName, shouldLoop = false) {
     if (this.isMuted || this.isGameRestarting) return;
     const audio = this.originalAudioElements[soundName];
     if (!audio) return;
-
     if (audio.paused) {
       audio.loop = shouldLoop;
       audio.currentTime = 0;
@@ -74,11 +75,11 @@ class AudioSounds {
   }
 
   /**
-   * Spielt ein geklontes Audio ab, damit mehrere Instanzen gleichzeitig laufen können.
-   * Fügt das geklonte Audio zur Liste hinzu für spätere Kontrolle.
-   * @param {string} soundName - Name des Sounds
-   * @param {boolean} [shouldLoop=false] - Ob geloopt werden soll
-   * @returns {HTMLAudioElement|null} Das geklonte Audio-Element oder null
+   * Plays a cloned audio so multiple instances can play simultaneously.
+   * Adds the cloned audio to the list for later control.
+   * @param {string} soundName - The name of the sound.
+   * @param {boolean} [shouldLoop=false] - Whether the sound should loop.
+   * @returns {HTMLAudioElement|null} The cloned audio element or null if not found.
    */
   playCloned(soundName, shouldLoop = false) {
     if (this.isMuted || this.isGameRestarting) return null;
@@ -94,8 +95,9 @@ class AudioSounds {
   }
 
   /**
-   * Stoppt ein Original-Audio und setzt es auf Anfang.
-   * @param {string} soundName - Name des Sounds
+   * Stops an original audio and resets its playback position.
+   * @param {string} soundName - The name of the sound.
+   * @returns {void}
    */
   stopOriginal(soundName) {
     const audio = this.originalAudioElements[soundName];
@@ -105,8 +107,9 @@ class AudioSounds {
   }
 
   /**
-   * Stoppt alle Sounds (originale und geklonte).
-   * Setzt isGameRestarting-Flag, damit keine neuen Sounds starten.
+   * Stops all sounds (original and cloned).
+   * Sets the isGameRestarting flag so no new sounds will start.
+   * @returns {void}
    */
   stopAllSounds() {
     this.isGameRestarting = true;
@@ -121,22 +124,23 @@ class AudioSounds {
   }
 
   /**
-   * Entfernt das Neustart-Flag, damit wieder Sounds gespielt werden können.
+   * Removes the restart flag so that sounds can be played again.
+   * @returns {void}
    */
   clearRestartFlag() {
     this.isGameRestarting = false;
   }
 
   /**
-  * Schaltet das Muten aller Sounds um und startet beim Ent­muten
-  * automatisch ausgewählte Loop-Sounds neu.
-  *
-  * - Wenn gemutet wird, bleiben alle originalen und geklonten Audios stumm.
-  * - Beim Ent­muten werden die Loops für `chickenRun` und `littleChickenRun`
-  *   neu gestartet, damit sie wieder hörbar sind.
-  *
-  * @returns {void}
-  */
+   * Toggles mute for all sounds and automatically restarts
+   * selected loop sounds when unmuted.
+   *
+   * - When muted, all original and cloned audios remain silent.
+   * - When unmuted, loops for `chickenRun` and `littleChickenRun`
+   *   are restarted so they are audible again.
+   *
+   * @returns {void}
+   */
   toggleMute() {
     this.isMuted = !this.isMuted;
     Object.values(this.originalAudioElements).forEach(audio => {
@@ -152,9 +156,11 @@ class AudioSounds {
   }
 
   /**
-   * Versucht, ein Audio abzuspielen, fängt Fehler (z.B. Autoplay-Blocker) still ab.
+   * Tries to play an audio element, catching errors silently
+   * (e.g., due to autoplay blockers).
    * @private
-   * @param {HTMLAudioElement} audio
+   * @param {HTMLAudioElement} audio - The audio element to play.
+   * @returns {void}
    */
   playAudioSafe(audio) {
     const p = audio.play();

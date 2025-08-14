@@ -1,13 +1,10 @@
 /**
- * Die Klasse `Level` beschreibt ein komplettes Level im Spiel.
- * 
- * Ein Level besteht aus Gegnern, Wolken, Hintergrundobjekten und verschiedenen Items.
- * Es hat ein fest definiertes Ende (`level_end_x`), ab dem keine Bewegung oder Gegner mehr vorkommen sollen.
- * 
+ * The `Level` class represents a complete level in the game.
+ * A level consists of enemies, clouds, background objects, and various items.
+ * It has a defined end (`level_end_x`), after which no movement or new enemies should appear.
  * @class
  */
 class Level {
-
     enemies;
     little_enemies;
     clouds;
@@ -21,18 +18,18 @@ class Level {
     statusBarEndboss;
 
     /**
-     * Erzeugt ein neues Level mit übergebenen Objekten.
+     * Creates a new level with the provided objects.
      * 
-     * @param {MovableObject[]} enemies - Große Gegner, die im Level vorkommen.
-     * @param {MovableObject[]} little_enemies - Kleine Gegner, z. B. Küken.
-     * @param {Cloud[]} clouds - Wolkenobjekte, die sich im Hintergrund bewegen.
-     * @param {BackgroundObject[]} backgroundObjects - Grafische Hintergrundobjekte für die Level-Atmosphäre.
-     * @param {Coin[]} coins - Alle Münzen, die im Level eingesammelt werden können.
-     * @param {Bottle[]} bottles - Alle Flaschen, die im Level eingesammelt oder geworfen werden können.
-     * @param {StatusBar} statusBarHealth - Lebensanzeige des Spielers.
-     * @param {StatusBar} statusBarBottle - Anzeige für verfügbare Flaschen.
-     * @param {StatusBar} statusBarCoin - Anzeige für gesammelte Münzen.
-     * @param {StatusBar} statusBarEndboss - Lebensanzeige des Endgegners.
+     * @param {MovableObject[]} enemies - Large enemies present in the level.
+     * @param {MovableObject[]} little_enemies - Small enemies, e.g., chicks.
+     * @param {Cloud[]} clouds - Cloud objects moving in the background.
+     * @param {BackgroundObject[]} backgroundObjects - Graphical background elements for atmosphere.
+     * @param {Coin[]} coins - All coins that can be collected in the level.
+     * @param {Bottle[]} bottles - All bottles that can be collected or thrown.
+     * @param {StatusBar} statusBarHealth - Player's health bar.
+     * @param {StatusBar} statusBarBottle - Display for available bottles.
+     * @param {StatusBar} statusBarCoin - Display for collected coins.
+     * @param {StatusBar} statusBarEndboss - Endboss health bar.
      */
     constructor(
         enemies, little_enemies, clouds, backgroundObjects,

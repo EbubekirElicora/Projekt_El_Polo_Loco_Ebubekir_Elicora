@@ -1,5 +1,5 @@
 /**
- * Prüft alle relevanten Kollisionen im Spiel (Feinde, Münzen, Flaschen, Treffer etc.).
+ * Handles all relevant collisions in the game (enemies, coins, bottles, hits, etc.).
  * @returns {void}
  */
 (function () {
@@ -14,7 +14,7 @@
 })();
 
 /**
- * Prüft Kollisionen mit Hauptfeinden (Chicken, Endboss).
+ * Checks collisions with main enemies (Chicken, Endboss).
  * @returns {void}
  */
 (function () {
@@ -28,7 +28,7 @@
 })();
 
 /**
- * Prüft Kollisionen mit kleinen Feinden.
+ * Checks collisions with little enemies.
  * @returns {void}
  */
 (function () {
@@ -39,9 +39,11 @@
       if (this.character.isColliding(enemy)) {
         const above = this.character.y + this.character.height <= enemy.y + enemy.height / 2;
         if (above && this.character.speedY < 0) {
-          enemy.die(); this.character.bounce();
+          enemy.die();
+          this.character.bounce();
         } else {
           this.character.hit();
+          this.character.hasPlayedHurtSound = false;
           this.level.statusBarHealth.setPercentage(this.character.energy);
         }
       }
@@ -50,8 +52,8 @@
 })();
 
 /**
- * Behandelt die Kollision mit einem Chicken.
- * @param {Chicken} enemy - Das Chicken-Objekt.
+ * Handles collision with a Chicken.
+ * @param {Chicken} enemy - The Chicken object.
  * @returns {void}
  */
 (function () {
@@ -60,9 +62,11 @@
     if (!enemy.isDead && !enemy.removeFromWorld && this.character.isColliding(enemy)) {
       const above = this.character.y + this.character.height <= enemy.y + enemy.height / 2;
       if (above && this.character.speedY < 0) {
-        enemy.die(); this.character.bounce();
+        enemy.die();
+        this.character.bounce();
       } else {
         this.character.hit();
+        this.character.hasPlayedHurtSound = false;
         this.level.statusBarHealth.setPercentage(this.character.energy);
       }
     }
@@ -70,22 +74,24 @@
 })();
 
 /**
- * Behandelt die Kollision mit dem Endboss.
- * @param {Endboss} enemy - Das Endboss-Objekt.
+ * Handles collision with the Endboss.
+ * @param {Endboss} enemy - The Endboss object.
  * @returns {void}
  */
 (function () {
   const worldCollision = window.World.prototype;
   worldCollision.handleEndbossCollision = function (enemy) {
     if (this.character.isColliding(enemy) && enemy.activated) {
-      enemy.collideAttack(); this.character.hit();
+      enemy.collideAttack();
+      this.character.hit();
+      this.character.hasPlayedHurtSound = false;
       this.level.statusBarHealth.setPercentage(this.character.energy);
     }
   };
 })();
 
 /**
- * Sammeln von Münzen (prüft Kollision, spielt Sound ab).
+ * Collects coins (checks collision and plays sound).
  * @returns {void}
  */
 (function () {
@@ -103,7 +109,7 @@
 })();
 
 /**
- * Sammeln von Flaschen (prüft Kollision, spielt Sound ab).
+ * Collects bottles (checks collision and plays sound).
  * @returns {void}
  */
 (function () {
@@ -116,18 +122,18 @@
       statusBar: this.level.statusBarBottle,
       maxCount: 5
     });
-    if (this.bottleCount > before) this.audio.playOriginal('bottleCollect');
+    if (this.bottleCount > before) this.audio.playCloned('bottleCollect');
   };
 })();
 
 /**
- * Allgemeine Methode zum Sammeln von Items.
- * @param {Object} params - Parameter-Objekt.
- * @param {Array} params.items - Liste der zu sammelnden Items.
- * @param {string} params.countKey - Name des Zählers im World-Objekt.
- * @param {Object} params.statusBar - Statusleiste, die aktualisiert wird.
- * @param {number} params.maxCount - Maximale Anzahl des Items.
- * @returns {Array} Gefilterte Liste mit nicht eingesammelten Items.
+ * Generic item collection method.
+ * @param {Object} params - Parameters object.
+ * @param {Array} params.items - List of items to collect.
+ * @param {string} params.countKey - Name of the counter in the World object.
+ * @param {Object} params.statusBar - Status bar to update.
+ * @param {number} params.maxCount - Maximum number of items.
+ * @returns {Array} Filtered list of items that were not collected.
  */
 (function () {
   const worldCollision = window.World.prototype;
@@ -144,7 +150,7 @@
 })();
 
 /**
- * Prüft, ob Flaschen geworfen werden sollen und führt den Wurf aus.
+ * Checks if bottles should be thrown and executes the throw.
  * @returns {void}
  */
 (function () {
@@ -155,16 +161,19 @@
       this.lastBottleThrow = now;
       const direction = this.character.otherDirection ? -1 : 1;
       const b = new ThrowableObject(this.character.x + 100 * direction, this.character.y + 100);
-      b.world = this; b.direction = direction; b.startHorizontalMovement();
+      b.world = this;
+      b.direction = direction;
+      b.startHorizontalMovement();
       this.throwableObjects.push(b);
       this.level.statusBarBottle.setPercentage(--this.bottleCount / 5 * 100);
-      this.audio.playOriginal('bottleThrow');
+      this.audio.playCloned('bottleThrow');
       this.character.lastMoveTime = now;
-    }};
+    }
+  };
 })();
 
 /**
- * Prüft alle Flaschen-Kollisionen.
+ * Checks all bottle collisions.
  * @returns {void}
  */
 (function () {
@@ -179,8 +188,8 @@
 })();
 
 /**
- * Prüft Flaschen-Kollision mit Hauptfeinden.
- * @param {ThrowableObject} bottle - Geworfene Flasche.
+ * Checks bottle collisions with main enemies.
+ * @param {ThrowableObject} bottle - Thrown bottle.
  * @returns {void}
  */
 (function () {
@@ -188,7 +197,7 @@
   worldCollision.checkBottleHitChickens = function (bottle) {
     this.level.enemies.forEach(enemy => {
       if (enemy instanceof Chicken && this.shouldBottleAffectEnemy(bottle, enemy)) {
-        enemy.die();
+        enemy.die(false);
         bottle.splash();
       }
     });
@@ -196,8 +205,8 @@
 })();
 
 /**
- * Prüft Flaschen-Kollision mit kleinen Feinden.
- * @param {ThrowableObject} bottle - Geworfene Flasche.
+ * Checks bottle collisions with little enemies.
+ * @param {ThrowableObject} bottle - Thrown bottle.
  * @returns {void}
  */
 (function () {
@@ -205,7 +214,7 @@
   worldCollision.checkBottleHitLittleChickens = function (bottle) {
     this.level.little_enemies.forEach(enemy => {
       if (enemy instanceof LittleChicken && this.shouldBottleAffectEnemy(bottle, enemy)) {
-        enemy.die();
+        enemy.die(false);
         bottle.splash();
       }
     });
@@ -213,8 +222,8 @@
 })();
 
 /**
- * Prüft Flaschen-Kollision mit dem Endboss.
- * @param {ThrowableObject} bottle - Geworfene Flasche.
+ * Checks bottle collisions with the Endboss.
+ * @param {ThrowableObject} bottle - Thrown bottle.
  * @returns {void}
  */
 (function () {
@@ -231,9 +240,9 @@
 })();
 
 /**
- * Überprüft, ob eine Flasche einen Feind beeinflussen soll.
- * @param {ThrowableObject} bottle - Geworfene Flasche.
- * @param {Enemy} enemy - Potenzieller Gegner.
+ * Determines whether a bottle should affect an enemy.
+ * @param {ThrowableObject} bottle - Thrown bottle.
+ * @param {Enemy} enemy - Potential enemy.
  * @returns {boolean}
  */
 (function () {
@@ -249,7 +258,7 @@
 })();
 
 /**
- * Prüft, ob Charakter Feinde trifft (z.B. durch Draufspringen).
+ * Checks if the character hits enemies (e.g., by jumping on them).
  * @returns {void}
  */
 (function () {

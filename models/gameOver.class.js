@@ -1,9 +1,12 @@
 /**
- * Klasse für das Game-Over-Bildschirm-Objekt, das nach Verlust angezeigt wird.
- * Erbt von DrawableObject.
+ * Class representing the Game Over screen object, shown after losing.
+ * Inherits from DrawableObject.
  */
 class GameOver extends DrawableObject {
 
+    /**
+     * Creates the Game Over screen and loads the background image.
+     */
     constructor() {
         super();
         this.gameOver_images = gameOver_images;

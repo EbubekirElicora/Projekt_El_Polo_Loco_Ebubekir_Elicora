@@ -1,6 +1,6 @@
 /**
- * Klasse für einen Gegner "Chicken", erbt von MovableObject.
- * Steuert Bewegung, Animation, Tod und Kollisionsbereich.
+ * Class for an enemy "Chicken", inherits from MovableObject.
+ * Controls movement, animation, death, and collision area.
  */
 class Chicken extends MovableObject {
     height = 100;
@@ -9,6 +9,10 @@ class Chicken extends MovableObject {
     isDead = false;
     removeFromWorld = false;
 
+    /**
+     * Creates a new Chicken instance.
+     * @param {Object} audio - Audio manager for playing sounds.
+     */
     constructor(audio) {
         super(audio);
         this.enemies_normal_images = enemies_normal_images;
@@ -21,7 +25,7 @@ class Chicken extends MovableObject {
     }
 
     /**
-     * Startet Animation und Bewegung in festen Intervallen.
+     * Starts animation and movement in fixed intervals.
      * @private
      */
     animate() {
@@ -37,20 +41,20 @@ class Chicken extends MovableObject {
     }
 
     /**
-     * Lässt das Chicken sterben, stoppt Bewegung und Sound, zeigt Tote-Animation.
+     * Kills the chicken, stops movement and sound, and shows dead animation.
      */
-    die() {
+    die(playSound = true) {
         this.isDead = true;
         this.speed = 0;
         this.stopLoopingSound('chickenRun');
-        if (this.audio) this.audio.playCloned('chickenDead');
+        if (this.audio && playSound) this.audio.playCloned('chickenDead');
         this.loadImage(this.enemies_normal_images.dead[0]);
         setTimeout(() => this.removeFromWorld = true, 1000);
     }
 
     /**
-     * Gibt die Kollisionsbox des Chickens zurück.
-     * @returns {{x: number, y: number, width: number, height: number}} Kollisionsrechteck
+     * Returns the chicken's collision box.
+     * @returns {{x: number, y: number, width: number, height: number}} Collision rectangle.
      */
     getCollisionBox() {
         return this.createCenteredBox(this.width * 0.1, this.height * 0.2);

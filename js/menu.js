@@ -1,5 +1,7 @@
 /**
- * Startet das Spiel und blendet das Menü aus.
+ * Starts the game and hides the menu screen.
+ * Initializes the world and game components.
+ * 
  * @returns {void}
  */
 function startGame() {
@@ -7,7 +9,7 @@ function startGame() {
   audio.clearRestartFlag();
   document.getElementById('menu').classList.add('hidden');
   document.getElementById('canvas').classList.remove('hidden');
-  document.getElementById('fullscreen-toggle').classList.remove('hidden');
+  document.getElementById('fullscreen-toggle').style.removeProperty('display');
   document.getElementById('canvas-container').classList.remove('hidden');
   document.getElementById('hud-bar').classList.remove('hidden');
   document.getElementById('main_headline').classList.remove('hidden');
@@ -15,7 +17,9 @@ function startGame() {
 }
 
 /**
- * Führt den Startbildschirm aus und zeigt danach das Menü.
+ * Runs the startup sequence by showing the start screen
+ * and then displaying the menu after a short delay.
+ * 
  * @returns {void}
  */
 function runStartup() {
@@ -26,7 +30,8 @@ function runStartup() {
 }
 
 /**
- * Zeigt den Startbildschirm an.
+ * Displays the start screen and hides other UI elements.
+ * 
  * @returns {void}
  */
 function showStartScreen() {
@@ -37,7 +42,8 @@ function showStartScreen() {
 }
 
 /**
- * Zeigt das Hauptmenü an.
+ * Displays the main menu and hides gameplay elements.
+ * 
  * @returns {void}
  */
 function showMenu() {
@@ -49,7 +55,8 @@ function showMenu() {
 }
 
 /**
- * Zeigt die Optionen-Seite an.
+ * Displays the options/settings screen.
+ * 
  * @returns {void}
  */
 function showOptions() {
@@ -59,7 +66,8 @@ function showOptions() {
 }
 
 /**
- * Zeigt das Impressum (rechtliche Hinweise) an.
+ * Displays the legal notice screen.
+ * 
  * @returns {void}
  */
 function showLegal() {
@@ -70,7 +78,9 @@ function showLegal() {
 }
 
 /**
- * Kehre zum Menü zurück, verlässt ggf. den Vollbildmodus.
+ * Returns to the menu screen.
+ * If in fullscreen mode, it exits fullscreen first before showing the menu.
+ * 
  * @returns {void}
  */
 function backToMenu() {
@@ -89,7 +99,8 @@ function backToMenu() {
 }
 
 /**
- * Zeigt das Menü an und setzt den Spielstatus zurück.
+ * Shows the menu and resets the game state to its default.
+ * 
  * @returns {void}
  */
 function showMenuAndReset() {
@@ -101,17 +112,20 @@ function showMenuAndReset() {
   document.getElementById('main_headline').classList.remove('hidden');
   document.getElementById('end_screen_buttons').classList.add('hidden');
   document.getElementById('canvas').classList.add('hidden');
-  document.getElementById('fullscreen-toggle').classList.add('hidden');
   document.getElementById('hud-bar').classList.add('hidden');
+  document.getElementById('touch-controls').style.setProperty('display','none','important');
+  document.getElementById('fullscreen-toggle').style.setProperty('display','none','important');
   if (typeof world !== 'undefined' && world !== null) {
     world.resetGame();
-    world.deadTimestamp = null;}
+    world.deadTimestamp = null;
+  }
   audio.stopAllSounds();
   audio.clearRestartFlag();
 }
 
 /**
- * Zeigt die Datenschutzerklärung an.
+ * Displays the privacy policy screen.
+ * 
  * @returns {void}
  */
 function showPrivacy() {
@@ -123,7 +137,8 @@ function showPrivacy() {
 }
 
 /**
- * Zeigt die Buttons auf dem Endbildschirm an.
+ * Displays the buttons on the end screen and hides HUD elements.
+ * 
  * @returns {void}
  */
 function showEndScreenButtons() {
@@ -134,7 +149,9 @@ function showEndScreenButtons() {
 }
 
 /**
- * Versucht, das Browserfenster zu schließen.
+ * Attempts to close the browser window.
+ * This may be blocked by most browsers for security reasons.
+ * 
  * @returns {void}
  */
 function quitGame() {

@@ -10,9 +10,9 @@
 
 #rotate-overlay .rotate-message {
   color: white;
-  font-size: 20px;
+  font-size: 32px;
   padding: 16px 32px;
-  background: rgba(0, 0, 0, 0.7);
+  background: linear-gradient(to bottom, #f0a500, #d97706);
   border-radius: 8px;
   text-align: center;
 }
