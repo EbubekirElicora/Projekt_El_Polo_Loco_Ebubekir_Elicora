@@ -303,18 +303,12 @@ p {
 /* ===== Endscreen Buttons ===== */
 #end_screen_buttons {
     position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
     display: flex;
     gap: 64px;
     align-items: center;
     justify-content: center;
     z-index: 1000;
-    width: 720px;
-}
-
-:fullscreen #end_screen_buttons {
-    width: max-content;
+    width: 100%;
 }
 
 .gameOver_menu_btn {
