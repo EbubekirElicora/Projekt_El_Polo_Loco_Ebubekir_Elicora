@@ -469,7 +469,7 @@ p {
 
 #hud-bar.fullscreen-mode {
     position: fixed;
-    gap: 24px;
+    gap: 48px;
 }
 
 #hud-bar.fullscreen-mode .hud-icon {
