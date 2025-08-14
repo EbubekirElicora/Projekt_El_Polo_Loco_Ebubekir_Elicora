@@ -1,5 +1,5 @@
 /**
- * Klasse zum Zurücksetzen des Spiels auf den Anfangszustand.
+ * Class responsible for resetting the game to its initial state.
  */
 class GameReset {
     constructor(world) {
@@ -7,8 +7,8 @@ class GameReset {
     }
 
     /**
-     * Führt den kompletten Reset des Spiels aus:
-     * Stoppt Sounds und Animationen, baut die Welt neu auf, setzt Status und UI zurück.
+     * Performs a complete game reset:
+     * Stops sounds and animations, rebuilds the world, and resets state and UI.
      */
     resetGame() {
         this.world.audio.stopAllSounds();
@@ -20,7 +20,8 @@ class GameReset {
     }
 
     /**
-     * Stoppt Animationen, Intervalle und ruft bei Gegnern und Wurfobjekten Cleanup auf.
+     * Stops animations and intervals,
+     * and calls cleanup on enemies and throwable objects if available.
      */
     stopAnimation() {
         if (this.world.animationFrameId) cancelAnimationFrame(this.world.animationFrameId);
@@ -32,7 +33,7 @@ class GameReset {
     }
 
     /**
-     * Baut die Spielwelt neu auf, inklusive Level und Charakter.
+     * Rebuilds the game world, including the level and character.
      */
     rebuildWorld() {
         initLevel();
@@ -43,7 +44,7 @@ class GameReset {
     }
 
     /**
-     * Setzt Spielstatus-Variablen (Kamera, Münzen, Flaschen, Flags) auf Anfangswerte zurück.
+     * Resets game state variables (camera, coins, bottles, and flags) to their initial values.
      */
     resetState() {
         this.world.camera_x = 0;
@@ -58,7 +59,7 @@ class GameReset {
     }
 
     /**
-     * Setzt die Statusleisten (Leben, Flaschen, Münzen, Endboss) zurück.
+     * Resets the status bars (health, bottles, coins, endboss).
      */
     resetBars() {
         const health = this.world.level.statusBarHealth;
@@ -72,7 +73,7 @@ class GameReset {
     }
 
     /**
-     * Setzt die Benutzeroberfläche zurück: Canvas ausblenden, Menü einblenden, Endscreen-Buttons ausblenden.
+     * Resets the UI: hides the canvas, shows the menu, and hides endscreen buttons.
      */
     resetUI() {
         document.getElementById('canvas').classList.add('hidden');

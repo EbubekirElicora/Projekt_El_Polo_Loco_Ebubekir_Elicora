@@ -1,6 +1,6 @@
 /**
- * Basisklasse für bewegliche Objekte, erweitert DrawableObject.
- * Enthält Bewegung, Schwerkraft, Lebensenergie, Sounds und Animation.
+ * Base class for movable objects, extends DrawableObject.
+ * Handles movement, gravity, energy, sounds, and animations.
  */
 class MovableObject extends DrawableObject {
     damagePerHit = 20;
@@ -20,8 +20,8 @@ class MovableObject extends DrawableObject {
     }
 
     /**
-     * Startet einen Loop-Sound, z.B. für Bewegungsgeräusche.
-     * @param {string} soundName - Name des abzuspielenden Sounds
+     * Starts a looping sound, e.g., for movement noises.
+     * @param {string} soundName - Name of the sound to play.
      */
     startLoopingSound(soundName) {
         if (!this.audio) return;
@@ -30,7 +30,7 @@ class MovableObject extends DrawableObject {
     }
 
     /**
-     * Stoppt den aktuell laufenden Loop-Sound.
+     * Stops the currently playing looping sound.
      */
     stopLoopingSound() {
         if (this.currentAudioClone) {
@@ -41,20 +41,20 @@ class MovableObject extends DrawableObject {
     }
 
     /**
-     * Bereinigt Intervalle und Sounds (z.B. beim Entfernen des Objekts).
+     * Cleans up intervals and sounds (e.g., when removing the object from the world).
      */
     cleanup() {
         if (this.moveInterval) clearInterval(this.moveInterval);
         if (this.walkInterval) clearInterval(this.walkInterval);
         if (this.gravityInterval) {
             clearInterval(this.gravityInterval);
-            this.gravityInterval = null; // wichtig, um mehrfaches Setzen zu verhindern
+            this.gravityInterval = null; // prevent multiple sets
         }
         this.stopLoopingSound();
     }
 
     /**
-     * Startet die Schwerkraft-Simulation mit festem Intervall.
+     * Starts gravity simulation with a fixed interval.
      */
     applyGravity() {
         if (this.gravityInterval) return;
@@ -68,7 +68,7 @@ class MovableObject extends DrawableObject {
     }
 
     /**
-     * Prüft, ob das Objekt sich über dem Boden befindet.
+     * Checks if the object is above the ground.
      * @returns {boolean}
      */
     isAboveGround() {
@@ -78,7 +78,7 @@ class MovableObject extends DrawableObject {
     }
 
     /**
-     * Setzt das Objekt auf den Boden und stoppt vertikale Bewegung.
+     * Places the object on the ground and stops vertical movement.
      */
     landOnGround() {
         this.y = 135;
@@ -87,7 +87,7 @@ class MovableObject extends DrawableObject {
     }
 
     /**
-     * Verursacht Schaden am Objekt, wenn es nicht gerade unverwundbar ist.
+     * Inflicts damage on the object if it is not currently invincible.
      */
     hit() {
         let now = Date.now();
@@ -98,7 +98,7 @@ class MovableObject extends DrawableObject {
     }
 
     /**
-     * Prüft, ob das Objekt gerade Schaden erlitten hat (Invincible-Phase).
+     * Checks if the object is currently in its invincible phase.
      * @returns {boolean}
      */
     isHurt() {
@@ -106,7 +106,7 @@ class MovableObject extends DrawableObject {
     }
 
     /**
-     * Prüft, ob das Objekt keine Energie mehr hat.
+     * Checks if the object has no remaining energy.
      * @returns {boolean}
      */
     isDead() {
@@ -114,29 +114,29 @@ class MovableObject extends DrawableObject {
     }
 
     /**
-     * Bewegt das Objekt nach rechts.
+     * Moves the object to the right.
      */
     moveRight() {
         this.x += this.speed;
     }
 
     /**
-     * Bewegt das Objekt nach links.
+     * Moves the object to the left.
      */
     moveLeft() {
         this.x -= this.speed;
     }
 
     /**
-     * Lässt das Objekt springen, setzt die vertikale Geschwindigkeit.
+     * Makes the object jump by setting vertical speed.
      */
     jump() {
         this.speedY = 35;
     }
 
     /**
-     * Spielt eine Animation anhand eines Bildarrays ab.
-     * @param {string[]} images - Array mit Bildpfaden
+     * Plays an animation from an array of images.
+     * @param {string[]} images - Array of image paths.
      */
     playAnimation(images) {
         const idx = this.currentImage++ % images.length;

@@ -1,12 +1,15 @@
 /**
- * Repräsentiert eine Wolke, die sich nach links bewegt.
- * Erbt von MovableObject.
+ * Represents a cloud that moves to the left.
+ * Inherits from MovableObject.
  */
 class Cloud extends MovableObject {
     y = 20;
     height = 250;
     width = 500;
 
+    /**
+     * Creates a new Cloud instance.
+     */
     constructor() {
         super();
         this.cloud_images = cloud_images;
@@ -15,7 +18,7 @@ class Cloud extends MovableObject {
         this.animate();
     }
 
-    /** Bewegt die Wolke kontinuierlich nach links */
+    /** Moves the cloud continuously to the left */
     animate() {
         setInterval(() => {
             this.moveLeft();

@@ -1,6 +1,7 @@
 /**
- * Klasse für den spielbaren Charakter, erbt von MovableObject.
- * Verwaltet Bewegung, Animation, Sounds und Kollision.
+ * Represents the playable character.
+ * Inherits from MovableObject.
+ * Handles movement, animation, sounds, and collision detection.
  */
 class Character extends MovableObject {
     height = 300;
@@ -19,7 +20,7 @@ class Character extends MovableObject {
     animationFrameId = null;
 
     /**
-     * Initialisiert den Charakter mit Bildern und startet die Animation.
+     * Initializes the character with images and starts the animation loop.
      */
     constructor() {
         super().loadImage(character_images.shortIdle[0]);
@@ -34,7 +35,7 @@ class Character extends MovableObject {
     }
 
     /**
-     * Startet die Animations- und Bewegungs-Loop.
+     * Starts the animation and movement loop.
      * @private
      */
     animate() {
@@ -52,7 +53,7 @@ class Character extends MovableObject {
     }
 
     /**
-     * Stoppt Animationen und räumt auf.
+     * Stops animations and cleans up resources.
      */
     cleanup() {
         super.cleanup();
@@ -63,8 +64,8 @@ class Character extends MovableObject {
     }
 
     /**
-     * Verarbeitet die Bewegung des Charakters basierend auf Tastatureingaben.
-     * Beinhaltet Bewegung nach links/rechts, Springen und Boss-Begrenzung.
+     * Handles the character's movement based on keyboard input.
+     * Includes left/right movement, jumping, and boss boundary restrictions.
      */
     handleMovement() {
         this.moved = false;
@@ -78,17 +79,17 @@ class Character extends MovableObject {
     }
 
     /**
-     * Sucht und gibt den Endboss im aktuellen Level zurück.
-     * @returns {Endboss|undefined} - Endboss-Instanz oder undefined, falls nicht vorhanden.
+     * Finds and returns the end boss in the current level.
+     * @returns {Endboss|undefined} Endboss instance or undefined if not present.
      */
     getBoss() {
         return this.world.level.enemies.find(e => e instanceof Endboss);
     }
 
     /**
-     * Verarbeitet die Bewegung nach rechts.
-     * Wenn der Endboss aktiv ist, wird die Position auf eine Maximalgrenze beschränkt.
-     * @param {Endboss|undefined} boss - Referenz auf den Endboss, falls vorhanden.
+     * Handles right movement.
+     * Restricts movement if the end boss is active.
+     * @param {Endboss|undefined} boss - Reference to the end boss if present.
      */
     handleRightMovement(boss) {
         if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
@@ -100,7 +101,7 @@ class Character extends MovableObject {
     }
 
     /**
-     * Verarbeitet die Bewegung nach links.
+     * Handles left movement.
      */
     handleLeftMovement() {
         if (this.world.keyboard.LEFT && this.x > 0) {
@@ -111,7 +112,7 @@ class Character extends MovableObject {
     }
 
     /**
-     * Führt einen Sprung aus, falls die Leertaste gedrückt wird und der Charakter am Boden ist.
+     * Executes a jump if the space key is pressed and the character is on the ground.
      */
     handleJump() {
         if (this.world.keyboard.SPACE && !this.isAboveGround()) {
@@ -123,9 +124,8 @@ class Character extends MovableObject {
     }
 
     /**
-     * Begrenzt die maximale X-Position des Charakters,
-     * sodass er den Endboss nicht überholen kann.
-     * @param {Endboss|undefined} boss - Referenz auf den Endboss, falls vorhanden.
+     * Restricts the maximum X position so the character cannot pass the end boss.
+     * @param {Endboss|undefined} boss - Reference to the end boss if present.
      */
     applyBossClamp(boss) {
         if (boss?.activated) {
@@ -137,7 +137,7 @@ class Character extends MovableObject {
     }
 
     /**
-     * Wählt die passende Animation basierend auf dem Zustand des Charakters.
+     * Selects the appropriate animation based on the character's state.
      * @private
      */
     handleAnimation() {
@@ -156,7 +156,7 @@ class Character extends MovableObject {
     }
 
     /**
-     * Animation und Verhalten bei Tod.
+     * Animation and behavior when dead.
      * @private
      */
     _onDead() {
@@ -171,7 +171,7 @@ class Character extends MovableObject {
     }
 
     /**
-     * Animation und Verhalten bei Verletzung.
+     * Animation and behavior when hurt.
      * @private
      */
     _onHurt() {
@@ -190,7 +190,7 @@ class Character extends MovableObject {
     }
 
     /**
-     * Animation und Verhalten beim Springen.
+     * Animation and behavior when jumping.
      * @private
      */
     _onJump() {
@@ -201,7 +201,7 @@ class Character extends MovableObject {
     }
 
     /**
-     * Animation und Verhalten beim Laufen.
+     * Animation and behavior when walking.
      * @private
      */
     _onWalk() {
@@ -211,8 +211,8 @@ class Character extends MovableObject {
     }
 
     /**
-     * Animation und Verhalten beim Stehen (Idle).
-     * @param {number} idleTime - Dauer seit der letzten Bewegung in ms
+     * Animation and behavior when idle.
+     * @param {number} idleTime - Time since last movement in milliseconds.
      * @private
      */
     _onIdle(idleTime) {
@@ -234,7 +234,7 @@ class Character extends MovableObject {
     }
 
     /**
-     * Spielt Sounds passend zu Sprung- und Fallbewegungen ab.
+     * Plays sounds related to jumping and falling.
      * @private
      */
     handleJumpAndFallSound() {
@@ -249,7 +249,7 @@ class Character extends MovableObject {
     }
 
     /**
-     * Spielt den Landungs-Sound ab und stoppt Fall-Sound.
+     * Plays landing sound and stops fall sound.
      * @private
      */
     handleLandingSound() {
@@ -261,7 +261,7 @@ class Character extends MovableObject {
     }
 
     /**
-     * Aktualisiert die Kamera-Position basierend auf der Charakter-Position.
+     * Updates the camera position based on the character's position.
      * @private
      */
     updateCamera() {
@@ -269,24 +269,23 @@ class Character extends MovableObject {
     }
 
     /**
-     * Springt nach oben mit definiertem Impuls.
+     * Makes the character bounce upwards with a fixed impulse.
      */
     bounce() {
         this.speedY = 30;
     }
 
     /**
-     * 
-     * Prüft, ob der Charakter auf einem Gegner springt.
-     * @param {MovableObject} enemy - Gegner-Objekt
-     * @returns {boolean} true wenn springend auf dem Gegner
+     * Checks whether the character is jumping on an enemy.
+     * @param {MovableObject} enemy - The enemy object.
+     * @returns {boolean} True if jumping on the enemy, otherwise false.
      */
     isJumpingOn(enemy) {
         return super.isJumpingOn(enemy);
     }
 
     /**
-     * Setzt den Charakter zurück und stoppt Sounds und Animationen.
+     * Resets the character's state, stopping sounds and animations.
      */
     reset() {
         this.hasPlayedHurtSound = false;
@@ -301,8 +300,8 @@ class Character extends MovableObject {
     }
 
     /**
-     * Gibt die Kollisionsbox des Charakters zurück.
-     * @returns {{x: number, y: number, width: number, height: number}} Kollisionsrechteck
+     * Returns the collision box of the character.
+     * @returns {{x: number, y: number, width: number, height: number}} The collision rectangle.
      */
     getCollisionBox() {
         const horizontalPadding = 40;

@@ -1,11 +1,11 @@
 /**
- * Repräsentiert ein Hintergrundobjekt, das sich bewegen kann.
+ * Represents a background object that can move.
  * @extends MovableObject
  */
 class BackgroundObject extends MovableObject {
   width = 720;
   height = 480;
-  
+
   constructor(imagePath, x) {
     super();
     this.loadImage(imagePath);
@@ -14,9 +14,9 @@ class BackgroundObject extends MovableObject {
   }
 
   /**
-   * Erzeugt ein Array von Hintergrundobjekten mit mehreren Layern.
-   * @param {number} [segments=8]
-   * @returns {BackgroundObject[]}
+   * Creates an array of background objects with multiple layers.
+   * @param {number} [segments=8] - The number of segments to generate.
+   * @returns {BackgroundObject[]} An array containing the generated background objects.
    */
   static createBackground(segments = 8) {
     let backgroundObjects = [];

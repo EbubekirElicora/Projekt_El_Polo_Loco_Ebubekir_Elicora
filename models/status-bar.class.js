@@ -1,6 +1,6 @@
 /**
- * StatusBar zeigt eine visuelle Anzeige für Lebensenergie, Munition etc.
- * Verwendet Bilder-Sets, die prozentual den Status darstellen.
+ * StatusBar displays a visual indicator for health, ammo, or other metrics.
+ * Uses image sets that reflect the current percentage of the status.
  */
 class StatusBar extends DrawableObject {
     percentage = 100;
@@ -8,10 +8,10 @@ class StatusBar extends DrawableObject {
     statusBarsImages;
 
     /**
-     * @param {string} type - Schlüssel für den Statusbar-Typ (z.B. "health", "ammo")
-     * @param {number} x - x-Position auf der Leinwand
-     * @param {number} y - y-Position auf der Leinwand
-     * @param {boolean} counterUp - Zählt die Statusbar von 0 hoch? (default false)
+     * @param {string} type - Key for the type of status bar (e.g., "health", "ammo")
+     * @param {number} x - X position on the canvas
+     * @param {number} y - Y position on the canvas
+     * @param {boolean} counterUp - If true, counts the status bar from 0 up (default false)
      */
     constructor(type, x, y, counterUp = false) {
         super();
@@ -26,8 +26,8 @@ class StatusBar extends DrawableObject {
     }
 
     /**
-     * Setzt den Statuswert und aktualisiert das angezeigte Bild.
-     * @param {number} percentage - Wert zwischen 0 und 100
+     * Sets the status percentage and updates the displayed image.
+     * @param {number} percentage - Value between 0 and 100
      */
     setPercentage(percentage) {
         this.percentage = percentage;
@@ -37,8 +37,8 @@ class StatusBar extends DrawableObject {
     }
 
     /**
-     * Ermittelt das Bild-Index basierend auf Prozentwert und counterUp-Flag.
-     * @returns {number} Index des Bildes im statusBarsImages Array
+     * Determines the image index based on the percentage and counterUp flag.
+     * @returns {number} Index of the image in the statusBarsImages array
      */
     resolveImageIndex() {
         if (this.counterUp) {

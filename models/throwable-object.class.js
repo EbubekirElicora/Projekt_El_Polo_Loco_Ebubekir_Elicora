@@ -1,6 +1,6 @@
 /**
- * Klasse für ein werfbares Objekt (z.B. eine Flasche), das sich bewegt, rotiert, fällt und splashen kann.
- * Erbt von MovableObject.
+ * Represents a throwable object (e.g., a bottle) that can move, rotate, fall, and splash.
+ * Inherits from MovableObject.
  */
 class ThrowableObject extends MovableObject {
     splashed = false;
@@ -12,12 +12,6 @@ class ThrowableObject extends MovableObject {
     rotationInterval;
     movementInterval;
 
-    /**
-     * Erstellt eine neue ThrowableObject-Instanz.
-     * @param {number} x - Startposition X
-     * @param {number} y - Startposition Y
-     * @param {number} [groundY=330] - Y-Position des Bodens
-     */
     constructor(x, y, groundY = 330) {
         super();
         this.x = x;
@@ -36,7 +30,7 @@ class ThrowableObject extends MovableObject {
         this.startRotationAnimation();
     }
 
-    /** Startet die Schwerkraft-Logik für das Objekt */
+    /** Starts the gravity logic for the object. */
     startGravity() {
         this.gravityInterval = setInterval(() => {
             if (this.onGround || this.splashed) return;
@@ -50,7 +44,7 @@ class ThrowableObject extends MovableObject {
         }, 1000 / 25);
     }
 
-    /** Startet die horizontale Bewegungs-Logik des Objekts */
+    /** Starts the horizontal movement logic for the object. */
     startHorizontalMovement() {
         const direction = this.world?.character.otherDirection ? -1 : 1;
         this.movementInterval = setInterval(() => {
@@ -62,7 +56,7 @@ class ThrowableObject extends MovableObject {
         }, 25);
     }
 
-    /** Startet die Rotationsanimation des Objekts */
+    /** Starts the rotation animation for the object. */
     startRotationAnimation() {
         this.rotationInterval = setInterval(() => {
             if (this.splashed) return;
@@ -71,7 +65,7 @@ class ThrowableObject extends MovableObject {
         }, this.frameInterval);
     }
 
-    /** Setzt das Objekt auf den Boden, stoppt Bewegungen und zeigt das Bodenbild */
+    /** Places the object on the ground, stops movement, and shows the ground image. */
     landOnGround() {
         this.y = this.groundY;
         this.speedY = 0;
@@ -80,9 +74,9 @@ class ThrowableObject extends MovableObject {
         this.stopAllIntervals();
     }
 
-    /** 
-     * Löst den Splash-Effekt aus: stoppt Bewegung, zeigt Splash-Animation und spielt Sound.
-     * Danach wird das Objekt nach kurzer Zeit aus der Welt entfernt.
+    /**
+     * Triggers the splash effect: stops movement, plays the splash animation and sound.
+     * After a short delay, removes the object from the game world.
      */
     splash() {
         if (this.splashed) return;
@@ -96,7 +90,7 @@ class ThrowableObject extends MovableObject {
         setTimeout(() => this.removeFromWorld = true, 500);
     }
 
-    /** Stoppt alle laufenden Intervalle */
+    /** Stops all active intervals. */
     stopAllIntervals() {
         clearInterval(this.gravityInterval);
         clearInterval(this.rotationInterval);
@@ -106,9 +100,9 @@ class ThrowableObject extends MovableObject {
         this.movementInterval = null;
     }
 
-    /** 
-     * Gibt die Kollisionsbox des Objekts zurück.
-     * @returns {Object} Kollisionsbox mit Eigenschaften x, y, width, height
+    /**
+     * Returns the collision box of the object.
+     * @returns {Object} Collision box with x, y, width, and height properties
      */
     getCollisionBox() {
         return this.createCenteredBox(this.width * 0.1, this.height * 0.1);

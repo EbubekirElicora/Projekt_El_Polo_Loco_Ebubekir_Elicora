@@ -1,9 +1,8 @@
 /**
- * Klasse für das Gewinn-Bildschirm-Objekt, das nach Sieg angezeigt wird.
- * Erbt von DrawableObject.
+ * Class for the victory screen object displayed after winning the game.
+ * Inherits from DrawableObject.
  */
 class GameWon extends DrawableObject {
-
     constructor() {
         super();
         this.win_images = win_images;

@@ -1,6 +1,7 @@
 /**
- * Repräsentiert ein kleines Huhn (LittleChicken), das im Spiel als kleiner Gegner auftritt.
- * Läuft automatisch nach links und spielt eine Laufanimation. Kann durch den Spieler besiegt werden.
+ * Represents a small chicken (LittleChicken) that appears as a minor enemy in the game.
+ * Automatically walks to the left and plays a walking animation.
+ * Can be defeated by the player.
  */
 class LittleChicken extends MovableObject {
     height = 70;
@@ -10,10 +11,10 @@ class LittleChicken extends MovableObject {
     removeFromWorld = false;
 
     /**
-     * Erzeugt ein kleines Huhn mit zufälliger Startposition und Geschwindigkeit.
-     * Lädt die entsprechenden Bilder und startet Bewegung + Animation + Sound.
+     * Creates a small chicken with a random starting position and speed.
+     * Loads the corresponding images and starts movement, animation, and sound.
      * 
-     * @param {AudioSounds} audio - Das Audio-System des Spiels, um Sounds abzuspielen.
+     * @param {AudioSounds} audio - The game's audio system for playing sounds.
      */
     constructor(audio) {
         super(audio);
@@ -27,7 +28,7 @@ class LittleChicken extends MovableObject {
     }
 
     /**
-     * Startet die Bewegung und Animation (laufen + Sound).
+     * Starts movement and animation (walking + sound).
      */
     animate() {
         this.moveInterval = setInterval(() => {
@@ -40,7 +41,7 @@ class LittleChicken extends MovableObject {
     }
 
     /**
-     * Lässt das Huhn sterben (Bildwechsel, stoppt Bewegung + Sound, wird später entfernt).
+     * Kills the chicken (changes sprite, stops movement + sound, and schedules removal).
      */
     die() {
         this.isDead = true;
@@ -52,9 +53,9 @@ class LittleChicken extends MovableObject {
     }
 
     /**
-     * Gibt die Kollisionsbox zurück, leicht verkleinert gegenüber der Grafik.
+     * Returns the collision box, slightly smaller than the visual sprite.
      * 
-     * @returns {Object} Ein zentriertes Rechteck mit horizontalem/vertikalem Padding.
+     * @returns {Object} A centered rectangle with horizontal and vertical padding.
      */
     getCollisionBox() {
         return this.createCenteredBox(this.width * 0.1, this.height * 0.2);
