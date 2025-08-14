@@ -4,8 +4,10 @@ let keyboard = new Keyboard();
 let audio = new AudioSounds();
 
 /**
- * Initialisiert das Spiel, indem das Canvas geladen,
- * die Welt erstellt und das Hauptcharakter-Objekt ausgegeben wird.
+ * Initializes the game by loading the canvas, 
+ * creating the world, and setting up the main character object.
+ * 
+ * @returns {void}
  */
 function init() {
     initLevel();
@@ -17,14 +19,18 @@ function init() {
 }
 
 /**
- * Event-Listener für Tastendruck. Setzt entsprechende Tastenflags im Keyboard-Objekt auf `true`.
- * Unterstützte Tasten:
- * - Pfeil rechts (→)
- * - Pfeil links (←)
- * - Pfeil hoch (↑)
- * - Pfeil runter (↓)
- * - Leertaste
- * - Taste "D"
+ * Event listener for key press.
+ * Sets the corresponding key flags in the Keyboard object to `true`.
+ * Supported keys:
+ * - Arrow Right (→)
+ * - Arrow Left (←)
+ * - Arrow Up (↑)
+ * - Arrow Down (↓)
+ * - Spacebar
+ * - Key "D"
+ * 
+ * @param {KeyboardEvent} e - The keyboard event.
+ * @returns {void}
  */
 window.addEventListener("keydown", (e) => {
     if (e.keyCode == 39) {
@@ -45,12 +51,15 @@ window.addEventListener("keydown", (e) => {
     if (e.keyCode == 68) {
         keyboard.D = true;
     }
-
-})
+});
 
 /**
- * Event-Listener für das Loslassen von Tasten. Setzt entsprechende Tastenflags im Keyboard-Objekt auf `false`.
- * Gleiche Tasten wie bei `keydown`.
+ * Event listener for key release.
+ * Sets the corresponding key flags in the Keyboard object to `false`.
+ * Same supported keys as in the `keydown` event.
+ * 
+ * @param {KeyboardEvent} e - The keyboard event.
+ * @returns {void}
  */
 window.addEventListener("keyup", (e) => {
     if (e.keyCode == 39) {
@@ -71,4 +80,4 @@ window.addEventListener("keyup", (e) => {
     if (e.keyCode == 68) {
         keyboard.D = false;
     }
-})
+});

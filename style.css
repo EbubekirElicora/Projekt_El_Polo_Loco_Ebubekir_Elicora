@@ -530,6 +530,7 @@ p {
 
     #rotate-overlay .rotate-message {
         font-size: 16px !important;
+        padding: 16px 16px !important; 
     }
 
     #start_headline {

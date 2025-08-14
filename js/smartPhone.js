@@ -1,8 +1,8 @@
 let gameStarted = false;
 
 /**
- * Erkennt, ob das Gerät Touch unterstützt (Smartphone oder Tablet).
- * @returns {boolean} true, wenn Touch-Events unterstützt werden.
+ * Checks whether the current device supports touch input (smartphone or tablet).
+ * @returns {boolean} True if touch events are supported, otherwise false.
  */
 function isTouchDevice() {
   return 'ontouchstart' in window
@@ -11,26 +11,26 @@ function isTouchDevice() {
 }
 
 /**
- * Zeigt das Rotate-Overlay an und versteckt Canvas, White-Icons und Touch-Controls.
- * @param {HTMLElement} overlay - Das Overlay-Element.
- * @param {HTMLElement} canvasContainer - Der Canvas-Container.
- * @param {NodeList} whiteIcons - Sammlung der White-Icon Elemente.
- * @param {HTMLElement} touchControls - Der Container der Touch-Controls.
+ * Displays the rotate overlay and hides the canvas, white icons, and touch controls.
+ * @param {HTMLElement} overlay - The overlay element.
+ * @param {HTMLElement} canvasContainer - The container holding the canvas.
+ * @param {NodeList} whiteIcons - Collection of white icon elements.
+ * @param {HTMLElement} touchControls - The touch controls container.
  */
 function showRotateOverlay(overlay, canvasContainer, whiteIcons, touchControls) {
   overlay.classList.remove('hidden');
   overlay.querySelector('.rotate-message').textContent =
-    'Bitte drehe dein Handy ins Querformat um spielen zu können!';
+    'Please rotate your device to landscape mode to play!';
   touchControls.classList.add('hidden');
 }
 
 /**
- * Versteckt das Rotate-Overlay und zeigt Canvas oder Touch-Controls, falls nötig.
- * @param {HTMLElement} overlay - Das Overlay-Element.
- * @param {HTMLElement} canvasContainer - Der Canvas-Container.
- * @param {HTMLElement} touchControls - Der Container der Touch-Controls.
- * @param {boolean} isMobileWidth - true, wenn die Breite mobiltypisch ist.
- * @param {boolean} isPortrait - true, wenn die Orientierung Hochformat ist.
+ * Hides the rotate overlay and shows the canvas or touch controls if needed.
+ * @param {HTMLElement} overlay - The overlay element.
+ * @param {HTMLElement} canvasContainer - The container holding the canvas.
+ * @param {HTMLElement} touchControls - The touch controls container.
+ * @param {boolean} isMobileWidth - True if screen width is mobile-sized.
+ * @param {boolean} isPortrait - True if screen is in portrait orientation.
  */
 function hideRotateOverlay(overlay, canvasContainer, touchControls, isMobileWidth, isPortrait) {
   overlay.classList.add('hidden');
@@ -42,10 +42,10 @@ function hideRotateOverlay(overlay, canvasContainer, touchControls, isMobileWidt
 }
 
 /**
- * Steuert die Sichtbarkeit der White-Icons basierend auf Gerät & Zustand.
- * @param {NodeList} whiteIcons - Sammlung der White-Icon Elemente.
- * @param {boolean} isTouch - true, wenn Gerät Touch unterstützt.
- * @param {boolean} isPortrait - true, wenn Bildschirm im Hochformat ist.
+ * Updates the visibility of white icons based on device type and orientation.
+ * @param {NodeList} whiteIcons - Collection of white icon elements.
+ * @param {boolean} isTouch - True if the device supports touch.
+ * @param {boolean} isPortrait - True if the screen is in portrait mode.
  */
 function updateWhiteIconsVisibility(whiteIcons, isTouch, isPortrait) {
   const isMobileWidth = isTouch && window.innerWidth <= 1000;
@@ -55,8 +55,8 @@ function updateWhiteIconsVisibility(whiteIcons, isTouch, isPortrait) {
 }
 
 /**
- * Prüft Geräteeigenschaften & Ausrichtung und steuert Anzeige-Logik.
- * @param {object} refs - Sammlung aller benötigten DOM-Referenzen.
+ * Checks device orientation and adjusts UI elements accordingly.
+ * @param {object} refs - Collection of all necessary DOM references.
  */
 function checkOrientation(refs) {
   const { overlay, canvasContainer, whiteIcons, touchControls } = refs;
@@ -73,8 +73,8 @@ function checkOrientation(refs) {
 }
 
 /**
- * Verbindet Touch-Buttons mit world.keyboard Steuerung.
- * @param {object} refs - Sammlung der Touch-Button Referenzen.
+ * Maps touch buttons to world.keyboard controls.
+ * @param {object} refs - Collection of touch button references.
  */
 function setupTouchControls(refs) {
   const map = [
@@ -90,10 +90,10 @@ function setupTouchControls(refs) {
 }
 
 /**
- * Handler für Start-Button: Startet das Spiel & aktualisiert UI.
- * @param {object} refs - Sammlung aller benötigten DOM-Referenzen.
- * @param {Function} cbCheckOrientation - Callback für Orientation-Check.
- * @returns {Function} Event-Handler Funktion.
+ * Creates a start button handler that begins the game and updates the UI.
+ * @param {object} refs - DOM references.
+ * @param {Function} cbCheckOrientation - Callback to check orientation.
+ * @returns {Function} Event handler function.
  */
 function startGameHandler(refs, cbCheckOrientation) {
   return () => {
@@ -105,9 +105,9 @@ function startGameHandler(refs, cbCheckOrientation) {
 }
 
 /**
- * Handler für Controls-Button: Versteckt Headline wenn Spiel gestartet.
- * @param {object} refs - Sammlung aller benötigten DOM-Referenzen.
- * @returns {Function} Event-Handler Funktion.
+ * Creates a handler for the controls button to hide the main headline if game has started.
+ * @param {object} refs - DOM references.
+ * @returns {Function} Event handler function.
  */
 function controlsHandler(refs) {
   return () => {
@@ -116,9 +116,9 @@ function controlsHandler(refs) {
 }
 
 /**
- * Handler für Options-Back-Button: Versteckt Headline verzögert wenn Spiel läuft.
- * @param {object} refs - Sammlung aller benötigten DOM-Referenzen.
- * @returns {Function} Event-Handler Funktion.
+ * Creates a handler for the options back button to hide headline with a slight delay.
+ * @param {object} refs - DOM references.
+ * @returns {Function} Event handler function.
  */
 function optionsBackHandler(refs) {
   return () => {
@@ -127,10 +127,10 @@ function optionsBackHandler(refs) {
 }
 
 /**
- * Handler für Restart-Button: Setzt Spielzustand zurück & aktualisiert UI.
- * @param {object} refs - Sammlung aller benötigten DOM-Referenzen.
- * @param {Function} cbCheckOrientation - Callback für Orientation-Check.
- * @returns {Function} Event-Handler Funktion.
+ * Creates a restart button handler for the main game to reset state and UI.
+ * @param {object} refs - DOM references.
+ * @param {Function} cbCheckOrientation - Callback to check orientation.
+ * @returns {Function} Event handler function.
  */
 function restartHandler(refs, cbCheckOrientation) {
   return () => {
@@ -143,11 +143,9 @@ function restartHandler(refs, cbCheckOrientation) {
 }
 
 /**
- * Setzt die Anzeige von Fullscreen-Button und Touch-Controls
- * basierend auf Gerätetyp und Fensterbreite um.
- *
- * @param {HTMLElement} fullscreenToggle - Das Fullscreen-Toggle-Element.
- * @param {HTMLElement} touchControls - Der Container der Touch-Controls.
+ * Updates visibility of fullscreen button and touch controls based on device and width.
+ * @param {HTMLElement} fullscreenToggle - Fullscreen toggle button.
+ * @param {HTMLElement} touchControls - Touch controls container.
  */
 function updateControlsVisibility(fullscreenToggle, touchControls) {
   const touch = isTouchDevice();
@@ -162,15 +160,10 @@ function updateControlsVisibility(fullscreenToggle, touchControls) {
 }
 
 /**
- * 
- * Handler für den Endscreen-Restart-Button. Setzt das Spiel zurück und
- * startet direkt neu, ohne ins Menü zurückzukehren.
- *
- * @param {object} refs - Sammlung aller wichtigen DOM-Referenzen.
- * @param {HTMLElement} refs.menu - Das Menü-Element.
- * @param {HTMLElement} refs.fullscreenToggle - Der Fullscreen-Toggle-Button.
- * @param {HTMLElement} refs.touchControls - Der Container der Touch-Controls.
- * @returns {Function}
+ * Creates a handler for restarting the game from the end screen.
+ * Resets the game and starts directly without returning to the menu.
+ * @param {object} refs - DOM references.
+ * @returns {Function} Event handler function.
  */
 function restartEndHandler(refs) {
   return () => {
@@ -189,16 +182,12 @@ function restartEndHandler(refs) {
 }
 
 /**
- * Registriert alle zentralen Event-Listener für die Anwendung:
- * - Fenstergröße & Orientierung → Orientation-Check
- * - Start-Button, Controls-Button, Options-Back-Button
- * - Restart-Button (Hauptspiel) und Endscreen-Restart-Button
- *
- * @param {object} refs - Sammlung aller wichtigen DOM-Referenzen.
- * @param {HTMLElement} refs.startBtn - Der Start-Button im Menü.
- * @param {HTMLElement} refs.controlsBtn - Der Controls-Button im HUD.
- * @param {HTMLElement} refs.optionsBackBtn - Der Zurück-Button in den Optionen.
- * @param {Function} cbCheckOrientation - Callback, um bei Resize/Rotate die Anzeige anzupassen.
+ * Registers all global event listeners:
+ * - window resize & orientation change → orientation check
+ * - start button, controls button, options back button
+ * - restart buttons for main game and end screen
+ * @param {object} refs - DOM references.
+ * @param {Function} cbCheckOrientation - Callback for orientation adjustments.
  */
 function setupEventListeners(refs, cbCheckOrientation) {
   window.addEventListener('resize', cbCheckOrientation);
@@ -228,7 +217,8 @@ document.addEventListener('DOMContentLoaded', () => {
     mainHeadline: document.getElementById('main_headline'),
     menu: document.getElementById('menu'),
     fullscreenToggle: document.getElementById('fullscreen-toggle'),
-    hudBar: document.getElementById('hud-bar')};
+    hudBar: document.getElementById('hud-bar')
+  };
   setupTouchControls(refs);
   setupEventListeners(refs, () => checkOrientation(refs));
   checkOrientation(refs);
