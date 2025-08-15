@@ -17,6 +17,15 @@
   text-align: center;
 }
 
+.touch-btn {
+  -webkit-user-select: none !important; /* iOS Safari */
+  -ms-user-select: none !important;
+  user-select: none !important;
+  -webkit-touch-callout: none !important; /* iOS long-press menu */
+  -webkit-user-drag: none !important;     /* disable image drag in WebKit */
+  touch-action: manipulation !important;  /* help with touch responsiveness */
+}
+
 @media only screen and (max-width: 1080px) and (orientation: portrait) {
   #rotate-overlay {
     display: flex !important;

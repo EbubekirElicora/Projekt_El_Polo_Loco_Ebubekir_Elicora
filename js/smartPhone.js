@@ -86,6 +86,9 @@ function setupTouchControls(refs) {
   map.forEach(([btn, key]) => {
     btn.addEventListener('touchstart', () => world.keyboard[key] = true);
     btn.addEventListener('touchend', () => world.keyboard[key] = false);
+    btn.addEventListener('mousedown', () => world.keyboard[key] = true);
+    btn.addEventListener('mouseup', () => world.keyboard[key] = false);
+    btn.addEventListener('mouseleave', () => world.keyboard[key] = false);
   });
 }
 
@@ -182,6 +185,18 @@ function restartEndHandler(refs) {
 }
 
 /**
+ * Disables dragging and context menu on all touch buttons.
+ * @param {HTMLElement} touchControls - The container with all touch buttons.
+ */
+function disableTouchButtonDefaults(touchControls) {
+  touchControls?.querySelectorAll('.touch-btn').forEach(btn => {
+    btn.setAttribute('draggable', 'false');
+    btn.addEventListener('dragstart', e => e.preventDefault());
+    btn.addEventListener('contextmenu', e => e.preventDefault());
+  });
+}
+
+/**
  * Registers all global event listeners:
  * - window resize & orientation change → orientation check
  * - start button, controls button, options back button
@@ -192,6 +207,10 @@ function restartEndHandler(refs) {
 function setupEventListeners(refs, cbCheckOrientation) {
   window.addEventListener('resize', cbCheckOrientation);
   window.addEventListener('orientationchange', cbCheckOrientation);
+  setTimeout(cbCheckOrientation, 0);
+  window.addEventListener('focus', cbCheckOrientation);
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) cbCheckOrientation();});
   refs.startBtn.addEventListener('click', startGameHandler(refs, cbCheckOrientation));
   refs.controlsBtn.addEventListener('click', controlsHandler(refs));
   refs.optionsBackBtn.addEventListener('click', optionsBackHandler(refs));
@@ -219,7 +238,8 @@ document.addEventListener('DOMContentLoaded', () => {
     fullscreenToggle: document.getElementById('fullscreen-toggle'),
     hudBar: document.getElementById('hud-bar')
   };
-  setupTouchControls(refs);
+  setupTouchControls(refs)
+  disableTouchButtonDefaults(refs.touchControls);
   setupEventListeners(refs, () => checkOrientation(refs));
   checkOrientation(refs);
 });

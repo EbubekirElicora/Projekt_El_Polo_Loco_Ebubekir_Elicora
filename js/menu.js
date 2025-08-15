@@ -13,6 +13,7 @@ function startGame() {
   document.getElementById('canvas-container').classList.remove('hidden');
   document.getElementById('hud-bar').classList.remove('hidden');
   document.getElementById('main_headline').classList.remove('hidden');
+  document.getElementById('end_screen_buttons').style.removeProperty('display');
   init();
 }
 
@@ -113,8 +114,9 @@ function showMenuAndReset() {
   document.getElementById('end_screen_buttons').classList.add('hidden');
   document.getElementById('canvas').classList.add('hidden');
   document.getElementById('hud-bar').classList.add('hidden');
-  document.getElementById('touch-controls').style.setProperty('display','none','important');
-  document.getElementById('fullscreen-toggle').style.setProperty('display','none','important');
+  document.getElementById('touch-controls').style.setProperty('display', 'none', 'important');
+  document.getElementById('end_screen_buttons').style.setProperty('display', 'none', 'important');
+  document.getElementById('fullscreen-toggle').style.setProperty('display', 'none', 'important');
   if (typeof world !== 'undefined' && world !== null) {
     world.resetGame();
     world.deadTimestamp = null;
