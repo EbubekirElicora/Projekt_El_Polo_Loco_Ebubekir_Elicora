@@ -128,7 +128,7 @@ class Endboss extends MovableObject {
         this.isHurtAnimationRunning = true;
         this.currentHurtFrame = 0;
         clearInterval(this.alertInterval);
-        this.hurtInterval = setInterval(() => this.updateHurtFrame(), 250);
+        this.hurtInterval = setInterval(() => this.updateHurtFrame(), 100);
     }
 
     /** Updates the current frame of the hurt animation. */
@@ -175,10 +175,11 @@ class Endboss extends MovableObject {
     /** Pauses after hurt animation, then resumes walking. */
     restartAfterPause() {
         if (this.hurtTimeout) clearTimeout(this.hurtTimeout);
-        this.stopWalking();
+        const oldSpeed = this.speed;
+        this.speed = Math.max(0.5, oldSpeed * 1.5);
         this.hurtTimeout = setTimeout(() => {
             if (!this.isDead) {
-                this.startWalking();
+                this.speed = oldSpeed + 0.5;
             }
             this.hurtTimeout = null;
         }, 1000);

@@ -10,6 +10,8 @@ class Character extends MovableObject {
     world;
     lastAnimationUpdate = 0;
     hurtSoundCooldown = 0;
+    jumpFrame = 0;
+    isInJumpAnimation = false;
     moved = false;
     isFallingSoundPlaying = false;
     isJumpingSoundPlayed = false;
@@ -120,6 +122,25 @@ class Character extends MovableObject {
             this.moved = true;
             this.world.audio.playCloned('characterJump');
             this.isJumpingSoundPlayed = true;
+            this.isInJumpAnimation = true;
+            this.jumpFrame = 0;
+        }
+    }
+
+    /**
+     * Play jump frames: ascent (0-5) while going up, descent (6-end) while falling.
+     * @param {string[]} images
+     */
+    playJumpAnimation(images) {
+        if (!images || !images.length) return;
+        this.jumpFrame = this.jumpFrame || 0;
+        const ascentEnd = 5, descentStart = 6;
+        if (this.speedY > 0) {
+            const end = Math.min(ascentEnd, images.length - 1), len = Math.max(1, end + 1);
+            this.img = this.imageCache[images[this.jumpFrame++ % len]];
+        } else {
+            const start = Math.min(descentStart, images.length - 1), len = Math.max(1, images.length - start);
+            this.img = this.imageCache[images[start + (this.jumpFrame++ % len)]];
         }
     }
 
@@ -146,7 +167,7 @@ class Character extends MovableObject {
             this._onDead();
         } else if (this.isHurt()) {
             this._onHurt();
-        } else if (this.isAboveGround()) {
+        } else if (this.isAboveGround() || this.isInJumpAnimation) {
             this._onJump();
         } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
             this._onWalk();
@@ -164,6 +185,7 @@ class Character extends MovableObject {
         this.isJumpingSoundPlayed = false;
         this.isFallingSoundPlaying = false;
         this.hasPlayedHurtSound = false;
+        this.isInJumpAnimation = false;
         const endboss = this.world.level.enemies.find(e => e instanceof Endboss);
         if (endboss) {
             endboss.stopLoopingSound('chickenRun');
@@ -187,6 +209,7 @@ class Character extends MovableObject {
         this.world.audio.stopOriginal('characterFall');
         this.isJumpingSoundPlayed = false;
         this.isFallingSoundPlaying = false;
+        this.isInJumpAnimation = false;
     }
 
     /**
@@ -194,7 +217,7 @@ class Character extends MovableObject {
      * @private
      */
     _onJump() {
-        this.playAnimation(character_images.jumping);
+        this.playJumpAnimation(character_images.jumping);
         this.handleJumpAndFallSound();
         this.world.audio.stopOriginal('characterRun');
         this.hasPlayedHurtSound = false;
@@ -255,9 +278,11 @@ class Character extends MovableObject {
     handleLandingSound() {
         if (this.isFallingSoundPlaying) {
             this.world.audio.stopOriginal('characterFall');
-            this.isFallingSoundPlaying = false;
-            this.isJumpingSoundPlayed = false;
         }
+        this.isFallingSoundPlaying = false;
+        this.isJumpingSoundPlayed = false;
+        this.isInJumpAnimation = false;
+        this.jumpFrame = 0;
     }
 
     /**
@@ -290,6 +315,8 @@ class Character extends MovableObject {
     reset() {
         this.hasPlayedHurtSound = false;
         this.lastHit = 0;
+        this.isInJumpAnimation = false;
+        this.jumpFrame = 0;
         this.world.audio.stopOriginal('characterHurt');
         this.world.audio.stopOriginal('characterRun');
         this.world.audio.stopOriginal('characterFall');
