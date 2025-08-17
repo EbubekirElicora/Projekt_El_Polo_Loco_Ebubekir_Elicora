@@ -65,11 +65,15 @@ class ThrowableObject extends MovableObject {
         }, this.frameInterval);
     }
 
-    /** Places the object on the ground, stops movement, and shows the ground image. */
+    /**
+     * Place the bottle on the ground and mark it pickable for later collection.
+     * @returns {void}
+     */
     landOnGround() {
         this.y = this.groundY;
         this.speedY = 0;
         this.onGround = true;
+        this.pickable = true;
         this.loadImage(this.groundImage);
         this.stopAllIntervals();
     }

@@ -123,6 +123,32 @@
       maxCount: 5
     });
     if (this.bottleCount > before) this.audio.playCloned('bottleCollect');
+    this.collectThrowablePickups();
+  };
+})();
+
+/**
+ * Scan throwableObjects and pick up landed bottles when colliding with the character.
+ * Marks the throwable removed and increases bottleCount (max 5).
+ * @this {World}
+ * @returns {void}
+ */
+(function () {
+  const worldCollision = window.World.prototype;
+  worldCollision.collectThrowablePickups = function () {
+    for (let i = this.throwableObjects.length - 1; i >= 0; i--) {
+      const t = this.throwableObjects[i];
+      if (!t || t.removeFromWorld || t.splashed || !t.pickable) continue;
+      if (this.character.isColliding(t)) {
+        if (this.bottleCount < 5) {
+          this.bottleCount++;
+          this.level.statusBarBottle.setPercentage((this.bottleCount / 5) * 100);
+          this.audio.playCloned('bottleCollect');
+        }
+        t.removeFromWorld = true;
+        this.throwableObjects.splice(i, 1);
+      }
+    }
   };
 })();
 
